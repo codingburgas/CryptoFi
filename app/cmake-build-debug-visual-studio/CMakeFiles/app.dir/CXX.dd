@@ -1,0 +1,5 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles\app.dir\main.cpp.obj: dyndep
+
+build CMakeFiles\app.dir\mainMenu.cpp.obj: dyndep
+

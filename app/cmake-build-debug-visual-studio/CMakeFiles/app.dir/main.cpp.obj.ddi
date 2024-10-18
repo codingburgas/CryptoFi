@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\app.dir\\main.cpp.obj",
+            "outputs": [
+                "C:\\Users\\Kaloyan\\Desktop\\finnance\\finance-challenge-cryptofi\\app\\cmake-build-debug-visual-studio\\vc140.pdb",
+                "CMakeFiles\\app.dir\\main.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

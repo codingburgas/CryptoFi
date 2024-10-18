@@ -1,0 +1,3 @@
+C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio/CMakeFiles/app.dir
+C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio/CMakeFiles/edit_cache.dir
+C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio/CMakeFiles/rebuild_cache.dir

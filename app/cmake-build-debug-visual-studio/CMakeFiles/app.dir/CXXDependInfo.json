@@ -1,0 +1,21 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio",
+	"dir-cur-src" : "C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app",
+	"dir-top-bld" : "C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio",
+	"dir-top-src" : "C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\Users\\Kaloyan\\Desktop\\finnance\\finance-challenge-cryptofi\\app\\vendor\\include"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/Kaloyan/Desktop/finnance/finance-challenge-cryptofi/app/cmake-build-debug-visual-studio/CMakeFiles/app.dir"
+}
