@@ -1,8 +1,15 @@
-//
-// Created by Kaloyan on 10/18/2024.
-//
+#pragma once
+#include "pch.h"
+class Account {
+public:
+    Account(const std::string& user, const std::string& pass);
+    ~Account();
 
-#ifndef ACCOUNTS_H
-#define ACCOUNTS_H
+    void saveToFile(const std::string& filePath) const;
+    std::string getUsername() const;
+    std::string getPassword() const;
 
-#endif //ACCOUNTS_H
+private:
+    std::string username;
+    std::string password;
+};

@@ -1,5 +1,7 @@
 #include "mainMenu.h"
 int main()
 {
-    menu::mainMenu();
+    menu::Menu mainMenu;
+    mainMenu.mainMenu();
 }
+

@@ -10,7 +10,10 @@ include_directories(${RAYLIB_DIR}/include)
 add_executable(app main.cpp
         mainMenu.h
         pch.h
-        mainMenu.cpp)
+        mainMenu.cpp
+        accounts.h
+        accounts.cpp)
+
 target_link_libraries(app ${RAYLIB_DIR}/lib/raylib.lib)
 
 add_custom_command(TARGET app POST_BUILD
@@ -20,4 +23,6 @@ add_custom_command(TARGET app POST_BUILD
 
 if(WIN32)
     target_link_libraries(app opengl32 gdi32 winmm)
+
+    target_compile_options(app PRIVATE /w1493)
 endif()
