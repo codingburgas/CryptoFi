@@ -8,11 +8,13 @@ set(RAYLIB_DIR "${CMAKE_SOURCE_DIR}/vendor")
 include_directories(${RAYLIB_DIR}/include)
 
 add_executable(app main.cpp
-        mainMenu.h
+        authentication.h
         pch.h
-        mainMenu.cpp
+        authentication.cpp
         accounts.h
-        accounts.cpp)
+        accounts.cpp
+        mainScreen.h
+        mainScreen.cpp)
 
 target_link_libraries(app ${RAYLIB_DIR}/lib/raylib.lib)
 

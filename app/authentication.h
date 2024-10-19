@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-namespace menu {
+namespace auth {
 
     class Menu {
     public:

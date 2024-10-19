@@ -1,7 +1,7 @@
-#include "mainMenu.h"
+#include "authentication.h"
 int main()
 {
-    menu::Menu mainMenu;
+    auth::Menu mainMenu;
     mainMenu.mainMenu();
 }
 
