@@ -72,8 +72,12 @@ namespace auth {
 
             std::ofstream newProfile(*profilePath);
             if (newProfile.is_open()) {
+
+                newProfile << "money,0\n";
+                newProfile << "budget,0\n";
                 newProfile.close();
             }
+
             delete profilePath;
             resetInputs();
         }
@@ -103,7 +107,7 @@ namespace auth {
 
             if (found) {
                 DrawText("Login Successful!", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 80, 20, GREEN);
-                mainScreen::mainScreen();
+                mainScreen::mainScreen(usernameInput);
             } else {
                 DrawText("Invalid Credentials!", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 80, 20, RED);
             }
@@ -116,7 +120,7 @@ namespace auth {
         SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
         InitWindow(1280, 720, "CryptoFi");
         SetTargetFPS(60);
-
+        SetExitKey(KEY_ESCAPE);
         Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
         Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
 
