@@ -91,15 +91,17 @@ namespace auth {
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !usernameInput.empty() && !passwordInput.empty())) {
 
             std::ifstream file(filePath);
-            std::string line, user, pass;
+            std::string line, user, encryptedPass;
             bool found = false;
+
+            std::string encryptedPasswordInput = encrypt(passwordInput, 'X');
 
             while (std::getline(file, line)) {
                 size_t delimiterPos = line.find(",");
                 user = line.substr(0, delimiterPos);
-                pass = line.substr(delimiterPos + 1);
+                encryptedPass = line.substr(delimiterPos + 1);
 
-                if (user == usernameInput && pass == passwordInput) {
+                if (user == usernameInput && encryptedPass == encryptedPasswordInput) {
                     found = true;
                     break;
                 }
@@ -113,7 +115,7 @@ namespace auth {
             }
 
             resetInputs();
-        }
+            }
     }
 
     void Menu::mainMenu() {
