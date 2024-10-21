@@ -6,6 +6,7 @@ namespace mainScreen {
         std::string type;
         std::string reason;
         std::chrono::system_clock::time_point date;
+        float difference;
     };
 
     void mainScreen(std::string account);

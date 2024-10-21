@@ -3,5 +3,6 @@ int main()
 {
     auth::Menu mainMenu;
     mainMenu.mainMenu();
+
 }
 
