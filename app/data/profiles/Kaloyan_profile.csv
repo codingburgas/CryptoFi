@@ -4,3 +4,7 @@ revenue,Test,Mon Oct 21 18:11:04 2024,1000
 expense,Test123,Mon Oct 21 18:11:18 2024,-300
 revenue,test not whole numbers,Mon Oct 21 18:13:09 2024,69.68
 expense,Funny number test,Mon Oct 21 18:23:39 2024,-348.99
+revenue,agkahsg,Wed Oct 23 20:43:36 2024,100
+expense,Test,Wed Oct 23 21:46:00 2024,-100
+revenue,test,Wed Oct 23 21:55:57 2024,100.69
+expense,test other,Wed Oct 23 21:56:09 2024,-100.69

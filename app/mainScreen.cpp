@@ -3,52 +3,70 @@
 
 namespace mainScreen {
     void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions) {
-    std::string* newAmountInput = new std::string;
+    std::string* differenceInput = new std::string;
     std::string* reasonInput = new std::string;
-    bool* typingAmount = new bool(true);
+    bool* typingDifference = new bool(true);
     bool* typingReason = new bool(false);
+    bool* isRevenue = new bool(true);  // true for revenue, false for expense
 
     while (true) {
-        if(IsKeyPressed(KEY_ESCAPE)) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
             break;
         }
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
         DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
-        DrawText("Enter new amount:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 20, GRAY);
-        DrawText(newAmountInput->c_str(), GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 60, 20, DARKGRAY);
 
-        DrawText("Enter reason:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2, 20, GRAY);
+        // Toggle between expense and revenue
+        DrawText("Transaction Type:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 120, 20, GRAY);
+        DrawText(*isRevenue ? "Revenue (+)" : "Expense (-)", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 90, 20, DARKGRAY);
+
+        DrawText("Enter amount difference:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 60, 20, GRAY);
+        DrawText(differenceInput->c_str(), GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 30, 20, DARKGRAY);
+
+        DrawText("Enter reason:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 10, 20, GRAY);
         DrawText(reasonInput->c_str(), GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 40, 20, DARKGRAY);
 
         if (IsKeyPressed(KEY_TAB)) {
-            *typingAmount = !(*typingAmount);
+            *typingDifference = !(*typingDifference);
             *typingReason = !(*typingReason);
         }
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
+    (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
+    CheckCollisionPointRec(GetMousePosition(),
+    {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 90), 200, 20})) {
+            *isRevenue = !(*isRevenue);
+    }
+
 
         int key = GetCharPressed();
         if (key > 0) {
-            if (*typingAmount) {
-                *newAmountInput += static_cast<char>(key);
+            if (*typingDifference) {
+                *differenceInput += static_cast<char>(key);
             } else if (*typingReason) {
                 *reasonInput += static_cast<char>(key);
             }
         }
 
         if (IsKeyPressed(KEY_BACKSPACE)) {
-            if (*typingAmount && !newAmountInput->empty()) {
-                newAmountInput->pop_back();
+            if (*typingDifference && !differenceInput->empty()) {
+                differenceInput->pop_back();
             } else if (*typingReason && !reasonInput->empty()) {
                 reasonInput->pop_back();
             }
         }
 
-        if (IsKeyPressed(KEY_ENTER) && !newAmountInput->empty() && !reasonInput->empty()) {
-            float newAmount = std::stof(*newAmountInput);
-            float difference = newAmount - *money;
+        if (IsKeyPressed(KEY_ENTER) && !differenceInput->empty() && !reasonInput->empty()) {
+            float difference = std::stof(*differenceInput);
+            if (!*isRevenue) {
+                difference = -difference;
+            }
 
-            std::string* type = new std::string((newAmount > *money) ? "revenue" : "expense");
+            *money += difference;
+
+            std::string* type = new std::string(*isRevenue ? "revenue" : "expense");
 
             auto now = std::chrono::system_clock::now();
             std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
@@ -62,6 +80,7 @@ namespace mainScreen {
             newTransaction->difference = difference;
             transactions.push_back(newTransaction);
 
+            // Update CSV
             std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
             std::vector<std::string> lines;
             std::ifstream fileIn(csvFilePath);
@@ -77,7 +96,7 @@ namespace mainScreen {
             }
 
             if (!lines.empty()) {
-                lines[0] = "money," + std::to_string(newAmount);
+                lines[0] = "money," + std::to_string(*money);
             }
 
             std::ofstream fileOut(csvFilePath, std::ios::trunc);
@@ -98,14 +117,14 @@ namespace mainScreen {
                 std::cerr << "Failed to open file: " << csvFilePath << std::endl;
             }
 
-            *money = newAmount;
-
-            delete newAmountInput;
+            // Clean up
+            delete differenceInput;
             delete reasonInput;
-            delete typingAmount;
+            delete typingDifference;
             delete typingReason;
             delete type;
             delete date;
+            delete isRevenue;
 
             break;
         }

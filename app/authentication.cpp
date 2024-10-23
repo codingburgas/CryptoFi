@@ -128,7 +128,7 @@ namespace auth {
 
         while (!WindowShouldClose()) {
             BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground({51,58,63,100});
             DrawRectangleRec(logInRec, BLUE);
             DrawRectangleRec(signUpRec, BLUE);
 
