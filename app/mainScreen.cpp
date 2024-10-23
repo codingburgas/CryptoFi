@@ -225,7 +225,25 @@ namespace mainScreen {
     delete csvFilePath;
     delete file;
 
+    Camera2D camera = {0};
+    camera.target = {0, 0};
+    camera.offset = {0, 0};
+    camera.zoom = 1.0f;
+
+    float scrollSpeed = 30.0f;
+    float screenHeight = (float)GetScreenHeight();
+    float maxScroll = transactions.size() * 30.0f - screenHeight + 100;
+
     while (!WindowShouldClose()) {
+        camera.target.y -= GetMouseWheelMove() * scrollSpeed;
+
+        if (camera.target.y < 0) {
+            camera.target.y = 0;
+        }
+        if (camera.target.y > maxScroll) {
+            camera.target.y = maxScroll;
+        }
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -233,12 +251,15 @@ namespace mainScreen {
         DrawText(TextFormat("Money: %.2f", *money), 200, 20, 20, GRAY);
         DrawText(TextFormat("Budget: %.2f", *budget), 350, 20, 20, GRAY);
 
+        BeginMode2D(camera);
+
         for (int i = 0; i < transactions.size(); i++) {
             Transaction* t = transactions[i];
             std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
-            DrawText(displayText.c_str(), 50, 100 + i * 30, 20, DARKGRAY);
+            DrawText(displayText.c_str(), 50, 100 + i * 30, 20, DARKGRAY);  
         }
 
+        EndMode2D();
 
         if (CheckCollisionPointRec(GetMousePosition(), {200, 20, 125, 20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
