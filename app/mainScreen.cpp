@@ -231,8 +231,16 @@ namespace mainScreen {
     camera.zoom = 1.0f;
 
     float scrollSpeed = 30.0f;
-    float screenHeight = (float)GetScreenHeight();
-    float maxScroll = transactions.size() * 30.0f - screenHeight + 100;
+    float screenHeight = static_cast<float>(GetScreenHeight());
+    float transactionHeight = 30.0f;
+    float baseY = 100.0f;
+    float transactionAreaHeight = transactions.size() * transactionHeight;
+
+    float maxScroll = transactionAreaHeight - (screenHeight - baseY);
+
+    if (maxScroll < 0) {
+        maxScroll = 0;
+    }
 
     while (!WindowShouldClose()) {
         camera.target.y -= GetMouseWheelMove() * scrollSpeed;
@@ -256,7 +264,7 @@ namespace mainScreen {
         for (int i = 0; i < transactions.size(); i++) {
             Transaction* t = transactions[i];
             std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
-            DrawText(displayText.c_str(), 50, 100 + i * 30, 20, DARKGRAY);  
+            DrawText(displayText.c_str(), 50, baseY + i * transactionHeight, 20, DARKGRAY);
         }
 
         EndMode2D();

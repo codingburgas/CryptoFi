@@ -20,9 +20,9 @@ namespace auth {
 
     void Menu::drawTextFields() {
         DrawText("Username: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 40, 20, LIGHTGRAY);
-        DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, DARKGRAY);
+        DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, WHITE);
         DrawText("Password: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2, 20, LIGHTGRAY);
-        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2, 20, DARKGRAY);
+        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2, 20, WHITE);
     }
 
     void Menu::handleInput() {
