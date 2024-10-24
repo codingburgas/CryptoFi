@@ -7,7 +7,7 @@ namespace mainScreen {
     std::string* reasonInput = new std::string;
     bool* typingDifference = new bool(true);
     bool* typingReason = new bool(false);
-    bool* isRevenue = new bool(true);  // true for revenue, false for expense
+    bool* isRevenue = new bool(true);
 
     while (true) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -19,7 +19,6 @@ namespace mainScreen {
 
         DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
 
-        // Toggle between expense and revenue
         DrawText("Transaction Type:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 120, 20, GRAY);
         DrawText(*isRevenue ? "Revenue (+)" : "Expense (-)", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 90, 20, DARKGRAY);
 
@@ -33,6 +32,24 @@ namespace mainScreen {
             *typingDifference = !(*typingDifference);
             *typingReason = !(*typingReason);
         }
+
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
+    (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
+    CheckCollisionPointRec(GetMousePosition(),
+    {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 30), 200, 30})) {
+            *typingDifference = 1;
+            *typingReason = 0;
+        }
+
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
+    (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
+    CheckCollisionPointRec(GetMousePosition(),
+    {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 +40), 200, 30})) {
+            *typingDifference = 0;
+            *typingReason = 1;
+        }
+
+
         if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
     (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
     CheckCollisionPointRec(GetMousePosition(),
@@ -80,7 +97,6 @@ namespace mainScreen {
             newTransaction->difference = difference;
             transactions.push_back(newTransaction);
 
-            // Update CSV
             std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
             std::vector<std::string> lines;
             std::ifstream fileIn(csvFilePath);
