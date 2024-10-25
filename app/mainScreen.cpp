@@ -272,6 +272,9 @@ namespace mainScreen {
         maxScroll = 0;
     }
     sortTransactions(transactions);
+
+        bool* showNavigationsBar = new bool(false);
+
     while (!WindowShouldClose()) {
         camera.target.y -= GetMouseWheelMove() * scrollSpeed;
 
@@ -299,6 +302,27 @@ namespace mainScreen {
 
         EndMode2D();
 
+        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
+        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
+        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
+
+        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
+            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            *showNavigationsBar = !(*showNavigationsBar);
+            }
+
+        if(*showNavigationsBar == true){
+            DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
+            DrawText("Budget",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
+            DrawText("Analytics",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+40,20,WHITE);
+
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),40,20}) &&
+            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                std::cout << "Analytics" << std::endl;
+            }
+
+        }
+
         if (CheckCollisionPointRec(GetMousePosition(), {200, 20, 125, 20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             updateMoney(money, account, transactions);
@@ -309,7 +333,7 @@ namespace mainScreen {
 
     delete money;
     delete budget;
-
+    delete showNavigationsBar;
     for (int i = 0; i < transactions.size(); i++) {
         delete transactions[i];
     }

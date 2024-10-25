@@ -10,6 +10,10 @@ std::string encrypt(const std::string& text, char key) {
     for (char& c : result) {
         c ^= key;
     }
+    for (char& c : result) {
+        c = static_cast<char>(c + (key % 26));
+    }
+    std::ranges::reverse(result.begin(), result.end());
     return result;
 }
 
