@@ -1,4 +1,4 @@
-money,680.690002
+money,690.000000
 budget,0
 revenue,Test,Mon Oct 21 18:11:04 2024,1000
 expense,Test123,Mon Oct 21 18:11:18 2024,-300
@@ -26,3 +26,5 @@ revenue,1,Wed Oct 23 22:15:21 2024,1
 revenue,1,Wed Oct 23 22:15:42 2024,1
 revenue,241,Thu Oct 24 21:36:59 2024,234
 expense,asd,Thu Oct 24 21:37:12 2024,-100
+revenue,test,Fri Oct 25 19:35:14 2024,10
+expense,test,Fri Oct 25 19:35:35 2024,-0.69
