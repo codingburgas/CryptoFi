@@ -2,12 +2,24 @@
 #include "accounts.h"
 
 namespace mainScreen {
+
+    void sortTransactions(std::vector<Transaction*>& transactions) {
+        size_t n = transactions.size();
+        for (size_t i = 0; i < n - 1; ++i) {
+            for (size_t j = 0; j < n - i - 1; ++j) {
+                if (transactions[j]->date < transactions[j + 1]->date) {
+                    std::swap(transactions[j], transactions[j + 1]);
+                }
+            }
+        }
+    }
+
     void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions) {
     std::string* differenceInput = new std::string;
     std::string* reasonInput = new std::string;
     bool* typingDifference = new bool(true);
     bool* typingReason = new bool(false);
-    bool* isRevenue = new bool(true);  // true for revenue, false for expense
+    bool* isRevenue = new bool(true);
 
     while (true) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -19,7 +31,6 @@ namespace mainScreen {
 
         DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
 
-        // Toggle between expense and revenue
         DrawText("Transaction Type:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 120, 20, GRAY);
         DrawText(*isRevenue ? "Revenue (+)" : "Expense (-)", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 90, 20, DARKGRAY);
 
@@ -33,6 +44,24 @@ namespace mainScreen {
             *typingDifference = !(*typingDifference);
             *typingReason = !(*typingReason);
         }
+
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
+    (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
+    CheckCollisionPointRec(GetMousePosition(),
+    {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 30), 200, 30})) {
+            *typingDifference = 1;
+            *typingReason = 0;
+        }
+
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
+    (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
+    CheckCollisionPointRec(GetMousePosition(),
+    {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 +40), 200, 30})) {
+            *typingDifference = 0;
+            *typingReason = 1;
+        }
+
+
         if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||
     (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) &&
     CheckCollisionPointRec(GetMousePosition(),
@@ -79,8 +108,7 @@ namespace mainScreen {
             newTransaction->date = now;
             newTransaction->difference = difference;
             transactions.push_back(newTransaction);
-
-            // Update CSV
+            sortTransactions(transactions);
             std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
             std::vector<std::string> lines;
             std::ifstream fileIn(csvFilePath);
@@ -159,6 +187,8 @@ namespace mainScreen {
         stream << std::fixed << std::setprecision(2) << difference;
         return stream.str();
     }
+
+
 
     void mainScreen(std::string account) {
     float* money = new float(0.0f);
@@ -241,7 +271,7 @@ namespace mainScreen {
     if (maxScroll < 0) {
         maxScroll = 0;
     }
-
+    sortTransactions(transactions);
     while (!WindowShouldClose()) {
         camera.target.y -= GetMouseWheelMove() * scrollSpeed;
 

@@ -21,8 +21,8 @@ namespace auth {
     void Menu::drawTextFields() {
         DrawText("Username: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 40, 20, LIGHTGRAY);
         DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, WHITE);
-        DrawText("Password: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2, 20, LIGHTGRAY);
-        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2, 20, WHITE);
+        DrawText("Password: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2+30, 20, LIGHTGRAY);
+        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2+30, 20, WHITE);
     }
 
     void Menu::handleInput() {
@@ -51,7 +51,7 @@ namespace auth {
     }
 
     void Menu::signUp() {
-        DrawText("Create Account", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 80, 30, LIGHTGRAY);
+        DrawText("Create Account", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 30, LIGHTGRAY);
         drawTextFields();
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
@@ -84,7 +84,7 @@ namespace auth {
     }
 
     void Menu::logIn() {
-        DrawText("Log In", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 80, 30, LIGHTGRAY);
+        DrawText("Log In", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 30, LIGHTGRAY);
         drawTextFields();
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
@@ -119,46 +119,66 @@ namespace auth {
     }
 
     void Menu::mainMenu() {
-        SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
-        InitWindow(1280, 720, "CryptoFi");
-        SetTargetFPS(60);
-        SetExitKey(KEY_ESCAPE);
-        Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
-        Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
+    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
+    InitWindow(1280, 720, "CryptoFi");
+    SetTargetFPS(60);
+    SetExitKey(KEY_ESCAPE);
 
-        while (!WindowShouldClose()) {
-            BeginDrawing();
-            ClearBackground({51,58,63,100});
-            DrawRectangleRec(logInRec, BLUE);
-            DrawRectangleRec(signUpRec, BLUE);
+    Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
+    Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
 
-            DrawRectangle(GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 100, 300, 40, BLACK);
+    Vector2 shadowOffset = { 10, 10 };
 
-            if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 50), 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                typingUsername = true;
-            } else if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2), 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                typingUsername = false;
-            }
+    Rectangle* usernameRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 - 50), 350, 50 };
+    Rectangle* passwordRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 20), 350, 50 };
 
-            if (CheckCollisionPointRec(GetMousePosition(), logInRec) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                currentState = FormState::LOG_IN;
-            }
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground({51, 58, 63, 100});
 
-            if (CheckCollisionPointRec(GetMousePosition(), signUpRec) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                currentState = FormState::SIGN_UP;
-            }
+        DrawText("Welcome to CryptoFi", GetScreenWidth() / 2 - 100, GetScreenHeight() / 8, 30, WHITE);
 
-            if (currentState == FormState::SIGN_UP) {
-                signUp();
-            } else if (currentState == FormState::LOG_IN) {
-                logIn();
-            }
+        DrawRectangleRec(logInRec, BLUE);
+        DrawRectangleRec(signUpRec, BLUE);
 
-            handleInput();
-            EndDrawing();
+        DrawRectangleRounded({ usernameRecPtr->x + shadowOffset.x, usernameRecPtr->y + shadowOffset.y, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
+        DrawRectangleRounded({ passwordRecPtr->x + shadowOffset.x, passwordRecPtr->y + shadowOffset.y, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
+
+        DrawRectangleRounded(*usernameRecPtr, 0.3f, 20, BLACK);
+        DrawRectangleRounded(*passwordRecPtr, 0.3f, 20, BLACK);
+
+        DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 100), 350, 40 }, 0.3f, 20, WHITE);
+        DrawText("SUBMIT", GetScreenWidth() / 2 + 10, GetScreenHeight() / 2 + 110, 20, BLACK);
+
+        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 50), 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            typingUsername = true;
+        } else if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2)+30, 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            typingUsername = false;
         }
 
-        CloseWindow();
+        if (CheckCollisionPointRec(GetMousePosition(), logInRec) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            currentState = FormState::LOG_IN;
+        }
+
+        if (CheckCollisionPointRec(GetMousePosition(), signUpRec) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            currentState = FormState::SIGN_UP;
+        }
+
+        if (currentState == FormState::SIGN_UP) {
+            signUp();
+        } else if (currentState == FormState::LOG_IN) {
+            logIn();
+        }
+
+        handleInput();
+        EndDrawing();
     }
+
+    delete usernameRecPtr;
+    delete passwordRecPtr;
+
+    CloseWindow();
+}
+
 
 }
