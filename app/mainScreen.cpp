@@ -1,4 +1,5 @@
 #include "mainScreen.h"
+#include "budgetCategories.h"
 #include "accounts.h"
 #include "Analytics.h"
 #include "budgetCategories.h"
@@ -310,11 +311,16 @@ namespace mainScreen {
         if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             *showNavigationsBar = !(*showNavigationsBar);
-            }
+        }
 
         if(*showNavigationsBar == true){
             DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
             DrawText("Budget",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),40,20}) &&
+            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                budgetCategories::categoryScreen(account);
+            }
+
             DrawText("Analytics",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+40,20,WHITE);
 
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),20,20}) &&
@@ -325,7 +331,6 @@ namespace mainScreen {
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                   budgetCategories::categoryScreen(account);
             }
-
         }
 
         if (CheckCollisionPointRec(GetMousePosition(), {200, 20, 125, 20}) &&
