@@ -17,6 +17,8 @@ add_executable(app main.cpp
         mainScreen.cpp
         budgetCategories.cpp
         budgetCategories.h
+        Analytics.cpp
+        Analytics.h
 )
 
 target_link_libraries(app ${RAYLIB_DIR}/lib/raylib.lib)

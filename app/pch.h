@@ -11,3 +11,4 @@
 #include <iomanip>
 #include "raymath.h"
 #include <algorithm>
+#include <cmath>

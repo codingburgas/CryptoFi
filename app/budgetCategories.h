@@ -8,12 +8,9 @@ namespace budgetCategories {
         std::string name;
         std::string description;
         float budget;
-        int dueYear;
-        int dueMonth;
-        int dueDay;
-        int dueHour;
-        int dueMinute;
+        std::chrono::system_clock::time_point date;
     };
+
     void printCategory(Category category, int Yoffset);
     void setDefaults(Category *def[]);
     void categoryScreen(std::string account);

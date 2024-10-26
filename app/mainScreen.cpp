@@ -1,6 +1,7 @@
 #include "mainScreen.h"
 #include "accounts.h"
-
+#include "Analytics.h"
+#include "budgetCategories.h"
 namespace mainScreen {
 
     void sortTransactions(std::vector<Transaction*>& transactions) {
@@ -188,8 +189,6 @@ namespace mainScreen {
         return stream.str();
     }
 
-
-
     void mainScreen(std::string account) {
     float* money = new float(0.0f);
     float* budget = new float(0.0f);
@@ -264,14 +263,14 @@ namespace mainScreen {
     float screenHeight = static_cast<float>(GetScreenHeight());
     float transactionHeight = 30.0f;
     float baseY = 100.0f;
-    float transactionAreaHeight = transactions.size() * transactionHeight;
+    float transactionAreaHeight = (transactions.empty()?0:transactions.size()) * transactionHeight;
 
     float maxScroll = transactionAreaHeight - (screenHeight - baseY);
 
     if (maxScroll < 0) {
         maxScroll = 0;
     }
-    sortTransactions(transactions);
+    if(!transactions.empty()) sortTransactions(transactions);
 
         bool* showNavigationsBar = new bool(false);
 
@@ -294,11 +293,13 @@ namespace mainScreen {
 
         BeginMode2D(camera);
 
-        for (int i = 0; i < transactions.size(); i++) {
-            Transaction* t = transactions[i];
-            std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
-            DrawText(displayText.c_str(), 50, baseY + i * transactionHeight, 20, DARKGRAY);
-        }
+
+            for (int i = 0; i < transactions.size(); i++) {
+                Transaction* t = transactions[i];
+                std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
+                DrawText(displayText.c_str(), 50, baseY + i * transactionHeight, 20, DARKGRAY);
+            }
+
 
         EndMode2D();
 
@@ -316,9 +317,13 @@ namespace mainScreen {
             DrawText("Budget",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
             DrawText("Analytics",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+40,20,WHITE);
 
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),40,20}) &&
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),20,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                std::cout << "Analytics" << std::endl;
+                analytics::analytics(transactions);
+            }
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),20,20}) &&
+            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                  budgetCategories::categoryScreen(account);
             }
 
         }
@@ -326,6 +331,7 @@ namespace mainScreen {
         if (CheckCollisionPointRec(GetMousePosition(), {200, 20, 125, 20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             updateMoney(money, account, transactions);
+            sortTransactions(transactions);
         }
 
         EndDrawing();

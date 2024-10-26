@@ -1,30 +1,7 @@
-money,690.000000
+money,790.000000
 budget,0
-revenue,Test,Mon Oct 21 18:11:04 2024,1000
-expense,Test123,Mon Oct 21 18:11:18 2024,-300
-revenue,test not whole numbers,Mon Oct 21 18:13:09 2024,69.68
-expense,Funny number test,Mon Oct 21 18:23:39 2024,-348.99
-revenue,agkahsg,Wed Oct 23 20:43:36 2024,100
-expense,Test,Wed Oct 23 21:46:00 2024,-100
-revenue,test,Wed Oct 23 21:55:57 2024,100.69
-expense,test other,Wed Oct 23 21:56:09 2024,-100.69
-revenue,1,Wed Oct 23 22:14:44 2024,1
-revenue,1,Wed Oct 23 22:14:47 2024,1
-revenue,1,Wed Oct 23 22:14:51 2024,111
-revenue,1,Wed Oct 23 22:14:53 2024,1
-revenue,1,Wed Oct 23 22:14:56 2024,1
-revenue,1,Wed Oct 23 22:14:58 2024,1
-revenue,1,Wed Oct 23 22:15:01 2024,1
-revenue,1,Wed Oct 23 22:15:04 2024,1
-revenue,1,Wed Oct 23 22:15:06 2024,1
-revenue,1,Wed Oct 23 22:15:08 2024,1
-revenue,1,Wed Oct 23 22:15:11 2024,1
-revenue,1,Wed Oct 23 22:15:14 2024,1
-revenue,1,Wed Oct 23 22:15:16 2024,1
-revenue,1,Wed Oct 23 22:15:18 2024,1
-revenue,1,Wed Oct 23 22:15:21 2024,1
-revenue,1,Wed Oct 23 22:15:42 2024,1
-revenue,241,Thu Oct 24 21:36:59 2024,234
-expense,asd,Thu Oct 24 21:37:12 2024,-100
-revenue,test,Fri Oct 25 19:35:14 2024,10
-expense,test,Fri Oct 25 19:35:35 2024,-0.69
+revenue,1,Sat Oct 26 19:46:57 2024,1
+revenue,10,Sat Oct 26 19:47:21 2024,10
+expense,1,Sat Oct 26 19:48:13 2024,-1
+expense,test,Sat Oct 26 19:49:05 2024,-10
+revenue,test,Sat Oct 26 19:51:48 2024,100
