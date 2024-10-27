@@ -19,14 +19,17 @@ add_executable(app main.cpp
         budgetCategories.h
         Analytics.cpp
         Analytics.h
+        export.cpp
+        export.h
 )
 
-target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib")
+target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib" "${VENDOR_DIR}/lib/hpdf.lib")
 
 add_custom_command(TARGET app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         "${VENDOR_DIR}/lib/raylib.dll"
         "${VENDOR_DIR}/lib/xlntd.dll"
+        "${VENDOR_DIR}/lib/hpdf.dll"
         $<TARGET_FILE_DIR:app>
 )
 

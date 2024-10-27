@@ -12,3 +12,6 @@
 #include "raymath.h"
 #include <algorithm>
 #include <cmath>
+#include "xlnt.hpp"
+#include "xlnt/xlnt_config.hpp"
+#include "libharu/hpdf.h"

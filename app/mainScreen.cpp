@@ -3,6 +3,7 @@
 #include "accounts.h"
 #include "Analytics.h"
 #include "budgetCategories.h"
+#include "export.h"
 namespace mainScreen {
 
     void sortTransactions(std::vector<Transaction*>& transactions) {
@@ -292,6 +293,12 @@ namespace mainScreen {
         DrawText(TextFormat("Money: %.2f", *money), 200, 20, 20, GRAY);
         DrawText(TextFormat("Budget: %.2f", *budget), 350, 20, 20, GRAY);
 
+        DrawRectangle(550,20,70,20,BLUE);
+        DrawText("Export",550, 20, 20, WHITE);
+        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(550),static_cast<float>(20),70,20}) &&
+             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+              export_ns::exportScreen(transactions,account);
+        }
         BeginMode2D(camera);
 
 

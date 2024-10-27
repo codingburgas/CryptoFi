@@ -6,6 +6,9 @@
 *.lo
 *.o
 
+#exports
+
+exports/
 
 # Precompiled Headers
 *.gch
