@@ -3,9 +3,9 @@ project(app)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(RAYLIB_DIR "${CMAKE_SOURCE_DIR}/vendor")
+set(VENDOR_DIR "${CMAKE_SOURCE_DIR}/vendor")
 
-include_directories(${RAYLIB_DIR}/include)
+include_directories(${VENDOR_DIR}/include)
 
 add_executable(app main.cpp
         authentication.h
@@ -21,15 +21,16 @@ add_executable(app main.cpp
         Analytics.h
 )
 
-target_link_libraries(app ${RAYLIB_DIR}/lib/raylib.lib)
+target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib")
 
 add_custom_command(TARGET app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        "${RAYLIB_DIR}/lib/raylib.dll"
-        $<TARGET_FILE_DIR:app>)
+        "${VENDOR_DIR}/lib/raylib.dll"
+        "${VENDOR_DIR}/lib/xlntd.dll"
+        $<TARGET_FILE_DIR:app>
+)
 
 if(WIN32)
     target_link_libraries(app opengl32 gdi32 winmm)
-
     target_compile_options(app PRIVATE /w1493)
 endif()
