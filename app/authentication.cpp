@@ -1,6 +1,7 @@
 #include "authentication.h"
 #include "accounts.h"
 #include "mainScreen.h"
+#include "pch.h"
 namespace fs = std::filesystem;
 
 namespace auth {
@@ -127,7 +128,7 @@ namespace auth {
     Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
     Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
 
-    Vector2 shadowOffset = { 10, 10 };
+    //Vector2 shadowOffset = ;
 
     Rectangle* usernameRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 - 50), 350, 50 };
     Rectangle* passwordRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 20), 350, 50 };
@@ -141,8 +142,8 @@ namespace auth {
         DrawRectangleRec(logInRec, BLUE);
         DrawRectangleRec(signUpRec, BLUE);
 
-        DrawRectangleRounded({ usernameRecPtr->x + shadowOffset.x, usernameRecPtr->y + shadowOffset.y, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
-        DrawRectangleRounded({ passwordRecPtr->x + shadowOffset.x, passwordRecPtr->y + shadowOffset.y, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
+        DrawRectangleRounded({ usernameRecPtr->x + 10, usernameRecPtr->y + 10, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
+        DrawRectangleRounded({ passwordRecPtr->x + 10, passwordRecPtr->y + 10, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
 
         DrawRectangleRounded(*usernameRecPtr, 0.3f, 20, BLACK);
         DrawRectangleRounded(*passwordRecPtr, 0.3f, 20, BLACK);

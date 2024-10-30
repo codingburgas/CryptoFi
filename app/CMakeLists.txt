@@ -23,7 +23,7 @@ add_executable(app main.cpp
         export.h
 )
 
-target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib" "${VENDOR_DIR}/lib/hpdf.lib")
+target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib" "${VENDOR_DIR}/lib/hpdf.lib" "${VENDOR_DIR}/lib/opennn.lib")
 
 add_custom_command(TARGET app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
