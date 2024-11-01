@@ -30,7 +30,7 @@ namespace mainScreen {
         }
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground({51, 58, 63, 100});
 
         DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
 
@@ -264,7 +264,7 @@ namespace mainScreen {
     float scrollSpeed = 30.0f;
     float screenHeight = static_cast<float>(GetScreenHeight());
     float transactionHeight = 30.0f;
-    float baseY = 100.0f;
+    float baseY = 200.0f;
     float transactionAreaHeight = (transactions.empty()?0:transactions.size()) * transactionHeight;
 
     float maxScroll = transactionAreaHeight - (screenHeight - baseY);
@@ -287,15 +287,18 @@ namespace mainScreen {
         }
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground({51, 58, 63, 100});
 
-        DrawText(account.c_str(), 50, 20, 20, GRAY);
-        DrawText(TextFormat("Money: %.2f", *money), 200, 20, 20, GRAY);
-        DrawText(TextFormat("Budget: %.2f", *budget), 350, 20, 20, GRAY);
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
 
-        DrawRectangle(550,20,70,20,BLUE);
-        DrawText("Export",550, 20, 20, WHITE);
-        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(550),static_cast<float>(20),70,20}) &&
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.2), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.2+10, 30, 20, GRAY);
+
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
+        DrawText("Export",GetScreenWidth()/1.3, 30, 25, BLACK);
+
+        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.4),static_cast<float>(20),250,25}) &&
              (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
               export_ns::exportScreen(transactions,account);
         }
@@ -305,42 +308,39 @@ namespace mainScreen {
             for (int i = 0; i < transactions.size(); i++) {
                 Transaction* t = transactions[i];
                 std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
-                DrawText(displayText.c_str(), 50, baseY + i * transactionHeight, 20, DARKGRAY);
+                DrawRectangleRounded({static_cast<float>(GetScreenWidth()/6), (baseY + i * transactionHeight-20)+i*50, static_cast<float>(GetScreenWidth()/1.4), 60}, 0.3f, 20, LIGHTGRAY);
+                DrawText(displayText.c_str(), GetScreenWidth()/6+10, (baseY + i * transactionHeight)+i*50, 20, DARKGRAY);
             }
 
 
         EndMode2D();
 
-        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
-        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
-        DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
+        DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16,GetScreenWidth()/16-20,GetScreenHeight()/16,WHITE);
+        DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-10,GetScreenWidth()/16-20,GetScreenHeight()/16-10,WHITE);
+        DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-20,GetScreenWidth()/16-20,GetScreenHeight()/16-20,WHITE);
 
-        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
+        if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/16-60),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             *showNavigationsBar = !(*showNavigationsBar);
         }
 
         if(*showNavigationsBar == true){
-            DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
-            DrawText("Budget",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),40,20}) &&
+            DrawRectangle(GetScreenWidth()/32,GetScreenHeight()/7.8,150,300,GRAY);
+            DrawText("Budget",GetScreenWidth()/32+10,GetScreenHeight()/7.8+20,20,WHITE);
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 budgetCategories::categoryScreen(account);
             }
 
-            DrawText("Analytics",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+40,20,WHITE);
+            DrawText("Analytics",GetScreenWidth()/32+10,GetScreenHeight()/7.8+60,20,WHITE);
 
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),20,20}) &&
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+10),static_cast<float>(GetScreenHeight()/7.8+60),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 analytics::analytics(transactions);
             }
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),20,20}) &&
-            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                  budgetCategories::categoryScreen(account);
-            }
         }
 
-        if (CheckCollisionPointRec(GetMousePosition(), {200, 20, 125, 20}) &&
+        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.2), 20, 250, 20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             updateMoney(money, account, transactions);
             sortTransactions(transactions);
