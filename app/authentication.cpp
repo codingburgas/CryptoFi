@@ -19,11 +19,11 @@ namespace auth {
         typingUsername = true;
     }
 
-    void Menu::drawTextFields() {
-        DrawText("Username: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 40, 20, LIGHTGRAY);
+    void Menu::drawTextFields(Font *fontAll) {
+        DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 - 40) }, 31, 1, LIGHTGRAY);
         DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, WHITE);
-        DrawText("Password: ", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2+30, 20, LIGHTGRAY);
-        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2+30, 20, WHITE);
+        DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 30) }, 31, 1, LIGHTGRAY);
+        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 + 30, 20, WHITE);
     }
 
     void Menu::handleInput() {
@@ -51,9 +51,9 @@ namespace auth {
         }
     }
 
-    void Menu::signUp() {
+    void Menu::signUp(Font *fontAll) {
         DrawText("Create Account", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 30, LIGHTGRAY);
-        drawTextFields();
+        drawTextFields(fontAll);
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !usernameInput.empty() && !passwordInput.empty())) {
@@ -84,9 +84,9 @@ namespace auth {
         }
     }
 
-    void Menu::logIn() {
-        DrawText("Log In", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 30, LIGHTGRAY);
-        drawTextFields();
+    void Menu::logIn(Font *fontAll) {
+        DrawTextEx(*fontAll, "Log in:", {static_cast<float> (GetScreenWidth() / 2 - 100),static_cast<float> (GetScreenHeight() / 2 - 100 )}, 35, 1, LIGHTGRAY);
+        drawTextFields(fontAll);
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !usernameInput.empty() && !passwordInput.empty())) {
@@ -125,6 +125,10 @@ namespace auth {
     SetTargetFPS(60);
     SetExitKey(KEY_ESCAPE);
 
+    Texture2D logo = LoadTexture("resources/images/logo.png");
+
+    Font font = LoadFont("resources/font/Manrope-Bold.ttf");
+    Font* fontAll = new Font(LoadFont("resources/font/Manrope-Bold.ttf"));
     Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
     Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
 
@@ -137,7 +141,8 @@ namespace auth {
         BeginDrawing();
         ClearBackground({51, 58, 63, 100});
 
-        DrawText("Welcome to CryptoFi", GetScreenWidth() / 2 - 100, GetScreenHeight() / 8, 30, WHITE);
+        DrawTextureEx(logo, {0, 0}, 0, 0.35, WHITE);
+        DrawTextEx(*fontAll, "Welcome to CryptoFi", { static_cast<float>(GetScreenWidth() / 2 - 100 ),static_cast<float>( GetScreenHeight() / 8 )}, 50, 1, WHITE);
 
         DrawRectangleRec(logInRec, BLUE);
         DrawRectangleRec(signUpRec, BLUE);
@@ -149,7 +154,7 @@ namespace auth {
         DrawRectangleRounded(*passwordRecPtr, 0.3f, 20, BLACK);
 
         DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 100), 350, 40 }, 0.3f, 20, WHITE);
-        DrawText("SUBMIT", GetScreenWidth() / 2 + 10, GetScreenHeight() / 2 + 110, 20, BLACK);
+        DrawTextEx(*fontAll, "Log In", {static_cast<float> (GetScreenWidth() / 2 + 10 ), static_cast<float> (GetScreenHeight() / 2 + 102 ) }, 32, 1, BLACK);
 
         if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 50), 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             typingUsername = true;
@@ -166,9 +171,9 @@ namespace auth {
         }
 
         if (currentState == FormState::SIGN_UP) {
-            signUp();
+            signUp(fontAll);
         } else if (currentState == FormState::LOG_IN) {
-            logIn();
+            logIn(fontAll);
         }
 
         handleInput();
@@ -177,6 +182,7 @@ namespace auth {
 
     delete usernameRecPtr;
     delete passwordRecPtr;
+    delete fontAll;
 
     CloseWindow();
 }

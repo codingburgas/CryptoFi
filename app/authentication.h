@@ -8,10 +8,10 @@ namespace auth {
         Menu();
 
         void resetInputs();
-        void drawTextFields();
+        void drawTextFields(Font *fontAll);
         void handleInput();
-        void signUp();
-        void logIn();
+        void signUp(Font *fontAll);
+        void logIn(Font *fontAll);
         void mainMenu();
 
     private:
@@ -22,7 +22,6 @@ namespace auth {
         std::string passwordInput;
         std::string passwordMasked;
         bool typingUsername;
-
         const std::string filePath = "data/accounts.csv";
     };
 
