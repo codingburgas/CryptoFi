@@ -1,3 +1,6 @@
+# Exception for Eigen/Core directory
+!vendor/include/eigen/Eigen/**
+!Core
 # Prerequisites
 *.d
 
