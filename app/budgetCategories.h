@@ -11,8 +11,7 @@ namespace budgetCategories {
         std::chrono::system_clock::time_point date;
     };
 
-    void printCategory(Category category, int Yoffset);
+    void displaySelected(Category *category, bool* isSelected);
     void setDefaults(Category *def[]);
     void categoryScreen(std::string account);
-
 }

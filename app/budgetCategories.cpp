@@ -1,7 +1,30 @@
 #include "budgetCategories.h"
 #include "accounts.h"
 
-    namespace budgetCategories {
+namespace budgetCategories {
+
+        void displaySelected(Category *category, bool* isSelected) {
+            std::string* inputName = nullptr;
+            std::string* inputType = nullptr;
+            std::string* inputDescription = nullptr;
+
+            if (*isSelected) {
+                if(!inputName && !inputType && !inputDescription) {
+                    inputName = new std::string(category->name);
+                    inputType = new std::string(category->type);
+                    inputDescription = new std::string(category->description);
+                }
+
+                DrawRectangle(GetScreenWidth() / 3 + 100, GetScreenHeight() / 6 + 100, 600, 250, DARKGRAY);
+                DrawText(inputName->c_str(), GetScreenWidth() / 3 + 110, GetScreenHeight() / 6 + 115, 30, WHITE);
+                DrawText(inputType->c_str(), GetScreenWidth() / 3 + 130, GetScreenHeight() / 6 + 150, 20, WHITE);
+                DrawText(inputDescription->c_str(), GetScreenWidth() / 3 + 130, GetScreenHeight() / 6 + 185, 20, WHITE);
+            }
+            else
+            {
+                DrawRectangle(GetScreenWidth() / 3 + 100, GetScreenHeight() / 6 + 100, 300, 250, RAYWHITE);
+            }
+        }
 
         void setDefaults(std::vector<Category> &def) {
             for(int i = 0; i < 9; i++) {
@@ -69,6 +92,10 @@
 
         void categoryScreen(std::string account) {
             std::vector<Category> allCategories;
+            Category *selectedCategory = new Category;
+            size_t* initialCategoryIndex = new size_t;
+            bool* categorySelected = new bool(false);
+
             setDefaults(allCategories);
 
             Camera2D camera = {0};
@@ -118,6 +145,31 @@
 
                 EndMode2D();
 
+                bool *categoryClickedThisFrame = new bool(false);
+
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+                    for (size_t i = 0; i < allCategories.size(); i++) {
+                        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i * 80 - camera.target.y), 200, 80})) {
+                            if(*initialCategoryIndex != i) {
+                                *selectedCategory = allCategories[i];
+                                *categorySelected = true;
+                                *categoryClickedThisFrame = true;
+                                std::cout << "Selected category is now " << allCategories[i].name << std::endl;
+                                *initialCategoryIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!*categoryClickedThisFrame && !CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 3 + 100), static_cast<float>(GetScreenHeight() / 6 + 100), 300, 250})) {
+                        *categorySelected = false;
+                        *initialCategoryIndex = -1;
+                        std::cout << "There is no selected category now" << std::endl;
+                    }
+                }
+
+                displaySelected(selectedCategory, categorySelected);
+
                 DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
                 DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
                 DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
@@ -125,7 +177,7 @@
                 if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
                     (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                     *showNavigationsBar = !(*showNavigationsBar);
-                    }
+                }
 
                 if(*showNavigationsBar == true){
                     DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
