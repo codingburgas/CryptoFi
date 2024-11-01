@@ -20,9 +20,9 @@ namespace auth {
     }
 
     void Menu::drawTextFields(Font *fontAll) {
-        DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 - 40) }, 31, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 - 20) }, 31, 1, LIGHTGRAY);
         DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, WHITE);
-        DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 30) }, 31, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 50) }, 31, 1, LIGHTGRAY);
         DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 + 30, 20, WHITE);
     }
 
@@ -52,7 +52,7 @@ namespace auth {
     }
 
     void Menu::signUp(Font *fontAll) {
-        DrawText("Create Account", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 100, 30, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Create Account:", { static_cast<float> ( GetScreenWidth() / 2 - 110 ),static_cast<float> ( GetScreenHeight() / 2 - 80 ) }, 35, 1, LIGHTGRAY);
         drawTextFields(fontAll);
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
@@ -85,7 +85,7 @@ namespace auth {
     }
 
     void Menu::logIn(Font *fontAll) {
-        DrawTextEx(*fontAll, "Log in:", {static_cast<float> (GetScreenWidth() / 2 - 100),static_cast<float> (GetScreenHeight() / 2 - 100 )}, 35, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Log in:", {static_cast<float> (GetScreenWidth() / 2 - 110),static_cast<float> (GetScreenHeight() / 2 - 80 )}, 35, 1, LIGHTGRAY);
         drawTextFields(fontAll);
 
         if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 100), 300, 40}) &&
@@ -129,23 +129,23 @@ namespace auth {
 
     Font font = LoadFont("resources/font/Manrope-Bold.ttf");
     Font* fontAll = new Font(LoadFont("resources/font/Manrope-Bold.ttf"));
-    Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
-    Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 100), 200, 40 };
+    Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
+    Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
 
     //Vector2 shadowOffset = ;
 
-    Rectangle* usernameRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 - 50), 350, 50 };
-    Rectangle* passwordRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 20), 350, 50 };
+    Rectangle* usernameRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 - 30), 350, 50 };
+    Rectangle* passwordRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 40), 350, 50 };
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground({51, 58, 63, 100});
 
-        DrawTextureEx(logo, {0, 0}, 0, 0.35, WHITE);
-        DrawTextEx(*fontAll, "Welcome to CryptoFi", { static_cast<float>(GetScreenWidth() / 2 - 100 ),static_cast<float>( GetScreenHeight() / 8 )}, 50, 1, WHITE);
+        DrawTextureEx(logo, {640, 25}, 0, 0.35, WHITE);
+        DrawTextEx(*fontAll, "Welcome to CryptoFi", { static_cast<float>(GetScreenWidth() / 2 - 100 ),static_cast<float>( GetScreenHeight() / 4.6 )}, 50, 1, WHITE);
 
-        DrawRectangleRec(logInRec, BLUE);
-        DrawRectangleRec(signUpRec, BLUE);
+        DrawRectangleRec(logInRec, BLACK);
+        DrawRectangleRec(signUpRec, BLACK);
 
         DrawRectangleRounded({ usernameRecPtr->x + 10, usernameRecPtr->y + 10, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
         DrawRectangleRounded({ passwordRecPtr->x + 10, passwordRecPtr->y + 10, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
@@ -153,12 +153,12 @@ namespace auth {
         DrawRectangleRounded(*usernameRecPtr, 0.3f, 20, BLACK);
         DrawRectangleRounded(*passwordRecPtr, 0.3f, 20, BLACK);
 
-        DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 100), 350, 40 }, 0.3f, 20, WHITE);
-        DrawTextEx(*fontAll, "Log In", {static_cast<float> (GetScreenWidth() / 2 + 10 ), static_cast<float> (GetScreenHeight() / 2 + 102 ) }, 32, 1, BLACK);
+        DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 125), 350, 40 }, 0.3f, 20, WHITE);
+        DrawTextEx(*fontAll, "Continue", {static_cast<float> (GetScreenWidth() / 2 + 10 ), static_cast<float> (GetScreenHeight() / 2 + 128 ) }, 32, 1, BLACK);
 
         if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 50), 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             typingUsername = true;
-        } else if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2)+30, 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+        } else if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2) + 30, 300, 40}) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             typingUsername = false;
         }
 
