@@ -21,9 +21,16 @@ add_executable(app main.cpp
         Analytics.h
         export.cpp
         export.h
+        predictions.cpp
+        predictions.h
 )
 
-target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib" "${VENDOR_DIR}/lib/hpdf.lib" "${VENDOR_DIR}/lib/opennn.lib")
+# Link libraries based on build type
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlntd.lib" "${VENDOR_DIR}/lib/hpdf.lib" "${VENDOR_DIR}/lib/opennn.lib")
+else()
+    target_link_libraries(app "${VENDOR_DIR}/lib/raylib.lib" "${VENDOR_DIR}/lib/xlnt.lib" "${VENDOR_DIR}/lib/hpdf.lib" "${VENDOR_DIR}/lib/opennn.lib") # Change if you have different versions for release
+endif()
 
 add_custom_command(TARGET app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy

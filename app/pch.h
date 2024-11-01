@@ -16,4 +16,6 @@
 #include "xlnt/xlnt_config.hpp"
 #include "libharu/hpdf.h"
 #include "opennn.h"
-#include "opennn/convolutional_layer.h"
+#include "opennn/data_set.h"
+#include "opennn/training_strategy.h"
+#include "opennn/layer.h"

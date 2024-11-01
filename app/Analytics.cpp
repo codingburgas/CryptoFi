@@ -1,4 +1,5 @@
 #include "Analytics.h"
+#include "predictions.h"
 
 namespace analytics {
     void analytics(std::vector<mainScreen::Transaction*> transactions) {
@@ -16,12 +17,16 @@ namespace analytics {
 
     int* totalTransactions = new int(*revenueCount + *expenseCount);
 
+        prediction::TransactionPredictor predictor;
+        predictor.analyzeTransactions(transactions);
+        std::string prediction = predictor.predictNextTransaction(transactions);
+
     while (!WindowShouldClose()) {
         int* posX = new int(GetScreenWidth() / 16 + 10);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
+        DrawText(prediction.c_str(), GetScreenWidth() / 16, GetScreenHeight() / 2, 20, GRAY);
         DrawLine(GetScreenWidth() / 16, GetScreenHeight() / 8, GetScreenWidth() / 16, GetScreenHeight() / 8 + 200, GRAY);
         DrawLine(GetScreenWidth() / 16, GetScreenHeight() / 4, GetScreenWidth() / 2, GetScreenHeight() / 4, GRAY);
 
