@@ -15,5 +15,3 @@
 #include "xlnt.hpp"
 #include "xlnt/xlnt_config.hpp"
 #include "libharu/hpdf.h"
-#include "opennn.h"
-#include "opennn/convolutional_layer.h"
