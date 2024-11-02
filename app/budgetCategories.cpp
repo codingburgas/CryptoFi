@@ -177,8 +177,11 @@ namespace budgetCategories {
             BeginMode2D(camera);
 
             for(size_t i = 0; i < categories.size(); i++) {
-                DrawRectangle(GetScreenWidth() / 6 + 100, GetScreenHeight() / 6 + 100 + i*80, 200, 80, GRAY);
-                DrawText(categories[i].name.c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*80, 20, BLACK);
+                std::string* displayText = new std::string;
+                *displayText = categories[i].type + ": " + categories[i].name + " - " + categories[i].description + " (Budget: " + std::to_string(categories[i].budget) + ")";
+                DrawRectangle(GetScreenWidth() / 6 + 100, GetScreenHeight() / 6 + 100 + i*80, GetScreenWidth()/1.8, 80, GRAY);
+                DrawText(displayText->c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*80, 20, BLACK);
+                delete displayText;
             }
 
             EndMode2D();

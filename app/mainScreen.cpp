@@ -30,7 +30,17 @@ namespace mainScreen {
         }
 
         BeginDrawing();
+
         ClearBackground({51, 58, 63, 100});
+
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
+
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.4), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.4+10, 30, 20, GRAY);
+
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
+        DrawText("Export",GetScreenWidth()/1.3, 30, 25, BLACK);
 
         DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
 
@@ -292,15 +302,21 @@ namespace mainScreen {
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
         DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
 
-        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.2), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.2+10, 30, 20, GRAY);
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.4), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.4+10, 30, 20, GRAY);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
         DrawText("Export",GetScreenWidth()/1.3, 30, 25, BLACK);
 
+        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.2), 20, 250, 20}) &&
+           (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+            updateMoney(money, account, transactions);
+            sortTransactions(transactions);
+           }
+
         if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.4),static_cast<float>(20),250,25}) &&
-             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-              export_ns::exportScreen(transactions,account);
+             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) && !transactions.empty()) {
+              export_ns::exportScreen(transactions,account, money);
         }
         BeginMode2D(camera);
 
@@ -325,26 +341,22 @@ namespace mainScreen {
         }
 
         if(*showNavigationsBar == true){
-            DrawRectangle(GetScreenWidth()/32,GetScreenHeight()/7.8,150,300,GRAY);
-            DrawText("Budget",GetScreenWidth()/32+10,GetScreenHeight()/7.8+20,20,WHITE);
+            DrawRectangle(GetScreenWidth()/48,GetScreenHeight()/7.8,150,300,GRAY);
+            DrawText("Budget",GetScreenWidth()/48+10,GetScreenHeight()/7.8+20,20,WHITE);
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 budgetCategories::categoryScreen(account);
             }
 
-            DrawText("Analytics",GetScreenWidth()/32+10,GetScreenHeight()/7.8+60,20,WHITE);
+            DrawText("Analytics",GetScreenWidth()/48+10,GetScreenHeight()/7.8+60,20,WHITE);
 
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+10),static_cast<float>(GetScreenHeight()/7.8+60),120,20}) &&
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/48+10),static_cast<float>(GetScreenHeight()/7.8+60),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) && !transactions.empty()) {
                 analytics::analytics(transactions);
             }
         }
 
-        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.2), 20, 250, 20}) &&
-            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-            updateMoney(money, account, transactions);
-            sortTransactions(transactions);
-        }
+
 
         EndDrawing();
     }
