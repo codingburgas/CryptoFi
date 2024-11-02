@@ -13,7 +13,7 @@
 | Ivaylo Gyurov | *Scrum trainer* | 🟥 10B |
 | Kaloyan Ivanov | *Back-end developer*  | 🟥 10B |
 | Alexander Ivanov | *Back-end developer*  | 🟥 10B |
-| Ivan-Michal Ivanov |  *Back-end developer*  | 🟥 10B |
+| Ivan-Michael Ivanov |  *Back-end developer*  | 🟥 10B |
 
 ## 📋 Description
 CryptoFi is an all-in-one finance app focused on seamless, secure transactions and comprehensive financial management.Designed to provide users with full control over their finances, CryptoFi enables fast, easy transactions, real-time asset tracking, and intuitive budgeting tools. 
@@ -21,11 +21,11 @@ CryptoFi is an all-in-one finance app focused on seamless, secure transactions a
 ## 📝 Documents
 <h4>Documents</h4>
   <ul>
-    <li> <img src="https://img.icons8.com/fluency/48/000000/microsoft-word-2019.png" alt="MS Word logo" width=20px /> <a href="./Documents/Documentation-CryptoFi.docx">Documentation</a></li>
+    <li> <a href="./Documents/Documentation-CryptoFi.docx">Documentation</a></li>
   </ul> 
   <h4>Presenting</h4>
   <ul>    
-    <li> <img src="https://img.icons8.com/fluency/48/000000/microsoft-powerpoint-2019.png" alt="MS Word logo" width=20px /> <a href="">Presentation</a></li>
+    <li><a href="./Documentation/Presentation-CryptoFi.pptx">Presentation</a></li>
   </ul> 
 
   ## ⚒️ Used technologies
