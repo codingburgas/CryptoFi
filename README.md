@@ -4,7 +4,11 @@
   <img src="./Documents/Logo.png"/>
 </p>
 
-<br>
+<div align="center">
+  <img src="https://img.shields.io/github/repo-size/codingburgas/CryptoFi" alt="Repo Size">
+  <img src="https://img.shields.io/github/contributors/codingburgas/CryptoFi" alt="Contributors">
+  <img src="https://img.shields.io/github/languages/top/codingburgas/CryptoFi" alt="Top Language">
+</div>
 
 ## 👨🏻‍💻 Team Members
 
@@ -25,7 +29,7 @@ CryptoFi is an all-in-one finance app focused on seamless, secure transactions a
   </ul> 
   <h4>Presenting</h4>
   <ul>    
-    <li><a href="./Documentation/Presentation-CryptoFi.pptx">Presentation</a></li>
+    <li><a href="./Presentation-CryptoFi.pptx">Presentation</a></li>
   </ul> 
 
   ## ⚒️ Used technologies
