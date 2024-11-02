@@ -29,7 +29,7 @@ CryptoFi is an all-in-one finance app focused on seamless, secure transactions a
   </ul> 
   <h4>Presenting</h4>
   <ul>    
-    <li><a href="./Presentation-CryptoFi.pptx">Presentation</a></li>
+    <li><a href="./Documents/Presentation-CryptoFi.pptx">Presentation</a></li>
   </ul> 
 
   ## ⚒️ Used technologies
