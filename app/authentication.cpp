@@ -124,6 +124,7 @@ namespace auth {
     InitWindow(1280, 720, "CryptoFi");
     SetTargetFPS(60);
     SetExitKey(KEY_ESCAPE);
+        SetWindowIcon(LoadImage("resources/images/logo.png"));
 
     Texture2D logo = LoadTexture("resources/images/logo.png");
 
