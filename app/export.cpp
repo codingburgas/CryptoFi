@@ -35,7 +35,6 @@ namespace export_ns {
 
             DrawRectangleRoundedLines({static_cast<float>(GetScreenWidth() / 2 - 210), static_cast<float>(GetScreenHeight() / 2 - 130), 420, 260}, 0.3f, 20,BLACK);
             DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 2 - 210), static_cast<float>(GetScreenHeight() / 2 - 130), 420, 260}, 0.3f, 20, WHITE);
-            DrawRectangleLinesEx({static_cast<float>(GetScreenWidth() / 2 - 180), static_cast<float>(GetScreenHeight() / 2 - 100), 360, 200}, 2, BLACK);
 
             DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 2 - 140), static_cast<float>(GetScreenHeight() / 2 -75), 270, 30},0.3f, 20, BLACK);
             DrawText("FORMAT DD/MM/YYYY", GetScreenWidth() / 2 - 120, GetScreenHeight() / 2 -70, 20, WHITE);

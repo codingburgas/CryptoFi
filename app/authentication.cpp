@@ -124,6 +124,7 @@ namespace auth {
     InitWindow(1280, 720, "CryptoFi");
     SetTargetFPS(60);
     SetExitKey(KEY_ESCAPE);
+        SetWindowIcon(LoadImage("resources/images/logo.png"));
 
     Texture2D logo = LoadTexture("resources/images/logo.png");
 
@@ -145,7 +146,9 @@ namespace auth {
         DrawTextEx(*fontAll, "Welcome to CryptoFi", { static_cast<float>(GetScreenWidth() / 2 - 100 ),static_cast<float>( GetScreenHeight() / 4.6 )}, 50, 1, WHITE);
 
         DrawRectangleRec(logInRec, BLACK);
+        DrawText("Log in" , static_cast<int>(logInRec.x + 20), static_cast<int>(logInRec.y + 10), 20, WHITE);
         DrawRectangleRec(signUpRec, BLACK);
+        DrawText("Sign up", static_cast<int>(signUpRec.x + 20), static_cast<int>(signUpRec.y + 10), 20, WHITE);
 
         DrawRectangleRounded({ usernameRecPtr->x + 10, usernameRecPtr->y + 10, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
         DrawRectangleRounded({ passwordRecPtr->x + 10, passwordRecPtr->y + 10, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});

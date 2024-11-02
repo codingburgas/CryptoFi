@@ -19,19 +19,21 @@ namespace budgetCategories {
             }
 
             BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground({51, 58, 63, 100});
 
-            DrawText("Enter Category Type:", 100, 100, 20, BLACK);
-            DrawText(typeInput.c_str(), 300, 100, 20, DARKGRAY);
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/5), static_cast<float>(GetScreenHeight()/6), static_cast<float>(GetScreenWidth()/1.8), static_cast<float>(GetScreenHeight()/2)}, 0.3f, 20, WHITE);
 
-            DrawText("Enter Category Name:", 100, 150, 20, BLACK);
-            DrawText(nameInput.c_str(), 300, 150, 20, DARKGRAY);
+            DrawText("Enter Category Type:", GetScreenWidth()/4, GetScreenHeight()/4, 20, BLACK);
+            DrawText(typeInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/4, 20, DARKGRAY);
 
-            DrawText("Enter Category Description:", 100, 200, 20, BLACK);
-            DrawText(descriptionInput.c_str(), 300, 200, 20, DARKGRAY);
+            DrawText("Enter Category Name:", GetScreenWidth()/4, GetScreenHeight()/3.2, 20, BLACK);
+            DrawText(nameInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/3.2, 20, DARKGRAY);
 
-            DrawText("Enter Category Budget:", 100, 250, 20, BLACK);
-            DrawText(budgetInput.c_str(), 300, 250, 20, DARKGRAY);
+            DrawText("Enter Category Description:", GetScreenWidth()/4, GetScreenHeight()/2.8, 20, BLACK);
+            DrawText(descriptionInput.c_str(), GetScreenWidth()/2.05, GetScreenHeight()/2.8, 20, DARKGRAY);
+
+            DrawText("Enter Category Budget:", GetScreenWidth()/4, GetScreenHeight()/2.4, 20, BLACK);
+            DrawText(budgetInput.c_str(), GetScreenWidth()/2.2, GetScreenHeight()/2.4, 20, DARKGRAY);
 
             if (IsKeyPressed(KEY_TAB)) {
                 if (typingType) {
@@ -74,7 +76,10 @@ namespace budgetCategories {
                 }
             }
 
-            if (IsKeyPressed(KEY_ENTER) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}, 0.3f, 20, BLACK);
+            DrawText("Enter to save", GetScreenWidth()/2.8+50, GetScreenHeight()/1.8+10, 20, WHITE);;
+            if (IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}) &&
+                         (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
                 Category newCategory;
                 newCategory.type = typeInput;
                 newCategory.name = nameInput;
@@ -102,33 +107,34 @@ namespace budgetCategories {
         void categoryScreen(std::string account) {
         std::vector<Category> categories;
 
-        std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
-        std::ifstream file(csvFilePath);
-        if (file.is_open()) {
-            std::string line;
-            while (std::getline(file, line)) {
-                if (line.find("category") == 0) {
-                    std::istringstream ss(line);
-                    std::string type, name, description;
-                    float budget;
-                    std::getline(ss, type, ',');
-                    std::getline(ss, name, ',');
-                    std::getline(ss, description, ',');
-                    ss >> budget;
+            std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
+            std::ifstream file(csvFilePath);
+            if (file.is_open()) {
+                std::string line;
+                while (std::getline(file, line)) {
+                    if (line.find("category") == 0) {
+                        std::istringstream ss(line);
+                        std::string type, name, description, budgetStr;
+                        std::getline(ss, type, ',');
+                        std::getline(ss, type, ',');
+                        std::getline(ss, name, ',');
+                        std::getline(ss, description, ',');
+                        std::getline(ss, budgetStr, ',');
+                        float budget = std::stof(budgetStr);
 
-                    Category category;
-                    category.type = type;
-                    category.name = name;
-                    category.description = description;
-                    category.budget = budget;
+                        Category category;
+                        category.type = type;
+                        category.name = name;
+                        category.description = description;
+                        category.budget = budget;
 
-                    categories.push_back(category);
+                        categories.push_back(category);
+                    }
                 }
+                file.close();
+            } else {
+                std::cerr << "Failed to open file: " << csvFilePath << std::endl;
             }
-            file.close();
-        } else {
-            std::cerr << "Failed to open file: " << csvFilePath << std::endl;
-        }
 
         Camera2D camera = {0};
         camera.target = {0, 0};
@@ -167,7 +173,7 @@ namespace budgetCategories {
             ClearBackground({51, 58, 63, 100});
 
             DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
-            DrawText("New category", GetScreenWidth()/10+80, 30, 25, BLACK);
+            DrawText("New category", GetScreenWidth()/10+40, 30, 25, BLACK);
 
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/10), 20, 250, 40}) &&
                          (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
@@ -179,29 +185,30 @@ namespace budgetCategories {
             for(size_t i = 0; i < categories.size(); i++) {
                 std::string* displayText = new std::string;
                 *displayText = categories[i].type + ": " + categories[i].name + " - " + categories[i].description + " (Budget: " + std::to_string(categories[i].budget) + ")";
-                DrawRectangle(GetScreenWidth() / 6 + 100, GetScreenHeight() / 6 + 100 + i*80, GetScreenWidth()/1.8, 80, GRAY);
-                DrawText(displayText->c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*80, 20, BLACK);
+                DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i*100), static_cast<float>(GetScreenWidth()/1.8), 40},0.3f,20, WHITE);
+                DrawText(displayText->c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*100, 20, BLACK);
                 delete displayText;
             }
 
             EndMode2D();
 
-            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
-            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
-            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16,GetScreenWidth()/16-20,GetScreenHeight()/16,WHITE);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-10,GetScreenWidth()/16-20,GetScreenHeight()/16-10,WHITE);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-20,GetScreenWidth()/16-20,GetScreenHeight()/16-20,WHITE);
 
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/16-60),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
                 (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 *showNavigationsBar = !(*showNavigationsBar);
-            }
+                }
 
             if(*showNavigationsBar == true){
-                DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
-                DrawText("Main Screen",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
-                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),40,20}) &&
+                DrawRectangle(GetScreenWidth()/48,GetScreenHeight()/7.8,150,300,GRAY);
+                DrawText("Main screen",GetScreenWidth()/48+10,GetScreenHeight()/7.8+20,20,WHITE);
+                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
                 (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                     break;
                 }
+
             }
 
             EndDrawing();

@@ -352,11 +352,9 @@ namespace mainScreen {
 
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/48+10),static_cast<float>(GetScreenHeight()/7.8+60),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) && !transactions.empty()) {
-                analytics::analytics(transactions);
+                analytics::analytics(transactions,account,money);
             }
         }
-
-
 
         EndDrawing();
     }
