@@ -21,9 +21,9 @@ namespace auth {
 
     void Menu::drawTextFields(Font *fontAll) {
         DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 - 20) }, 31, 1, LIGHTGRAY);
-        DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 - 40, 20, WHITE);
+        DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 30, GetScreenHeight() / 2 - 15, 20, WHITE);
         DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 50) }, 31, 1, LIGHTGRAY);
-        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 20, GetScreenHeight() / 2 + 30, 20, WHITE);
+        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 30, GetScreenHeight() / 2 + 55, 20, WHITE);
     }
 
     void Menu::handleInput() {

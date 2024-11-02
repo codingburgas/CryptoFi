@@ -1,201 +1,210 @@
 #include "budgetCategories.h"
-#include "accounts.h"
+#include "mainScreen.h"
 
 namespace budgetCategories {
 
-        void displaySelected(Category *category, bool* isSelected) {
-            std::string* inputName = nullptr;
-            std::string* inputType = nullptr;
-            std::string* inputDescription = nullptr;
+        void newBudget(std::string account, std::vector<Category>& categories) {
+        std::string typeInput;
+        std::string nameInput;
+        std::string descriptionInput;
+        std::string budgetInput;
+        bool typingType = true;
+        bool typingName = false;
+        bool typingDescription = false;
+        bool typingBudget = false;
 
-            if (*isSelected) {
-                if(!inputName && !inputType && !inputDescription) {
-                    inputName = new std::string(category->name);
-                    inputType = new std::string(category->type);
-                    inputDescription = new std::string(category->description);
+        while (true) {
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                break;
+            }
+
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+
+            DrawText("Enter Category Type:", 100, 100, 20, BLACK);
+            DrawText(typeInput.c_str(), 300, 100, 20, DARKGRAY);
+
+            DrawText("Enter Category Name:", 100, 150, 20, BLACK);
+            DrawText(nameInput.c_str(), 300, 150, 20, DARKGRAY);
+
+            DrawText("Enter Category Description:", 100, 200, 20, BLACK);
+            DrawText(descriptionInput.c_str(), 300, 200, 20, DARKGRAY);
+
+            DrawText("Enter Category Budget:", 100, 250, 20, BLACK);
+            DrawText(budgetInput.c_str(), 300, 250, 20, DARKGRAY);
+
+            if (IsKeyPressed(KEY_TAB)) {
+                if (typingType) {
+                    typingType = false;
+                    typingName = true;
+                } else if (typingName) {
+                    typingName = false;
+                    typingDescription = true;
+                } else if (typingDescription) {
+                    typingDescription = false;
+                    typingBudget = true;
+                } else if (typingBudget) {
+                    typingBudget = false;
+                    typingType = true;
+                }
+            }
+
+            int key = GetCharPressed();
+            if (key > 0) {
+                if (typingType) {
+                    typeInput += static_cast<char>(key);
+                } else if (typingName) {
+                    nameInput += static_cast<char>(key);
+                } else if (typingDescription) {
+                    descriptionInput += static_cast<char>(key);
+                } else if (typingBudget) {
+                    budgetInput += static_cast<char>(key);
+                }
+            }
+
+            if (IsKeyPressed(KEY_BACKSPACE)) {
+                if (typingType && !typeInput.empty()) {
+                    typeInput.pop_back();
+                } else if (typingName && !nameInput.empty()) {
+                    nameInput.pop_back();
+                } else if (typingDescription && !descriptionInput.empty()) {
+                    descriptionInput.pop_back();
+                } else if (typingBudget && !budgetInput.empty()) {
+                    budgetInput.pop_back();
+                }
+            }
+
+            if (IsKeyPressed(KEY_ENTER) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
+                Category newCategory;
+                newCategory.type = typeInput;
+                newCategory.name = nameInput;
+                newCategory.description = descriptionInput;
+                newCategory.budget = std::stof(budgetInput);
+
+                categories.push_back(newCategory);
+
+                std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
+                std::ofstream file(csvFilePath, std::ios::app);
+                if (file.is_open()) {
+                    file << "category," << newCategory.type << "," << newCategory.name << "," << newCategory.description << "," << newCategory.budget << "\n";
+                    file.close();
+                } else {
+                    std::cerr << "Failed to open file: " << csvFilePath << std::endl;
                 }
 
-                DrawRectangle(GetScreenWidth() / 3 + 100, GetScreenHeight() / 6 + 100, 600, 250, DARKGRAY);
-                DrawText(inputName->c_str(), GetScreenWidth() / 3 + 110, GetScreenHeight() / 6 + 115, 30, WHITE);
-                DrawText(inputType->c_str(), GetScreenWidth() / 3 + 130, GetScreenHeight() / 6 + 150, 20, WHITE);
-                DrawText(inputDescription->c_str(), GetScreenWidth() / 3 + 130, GetScreenHeight() / 6 + 185, 20, WHITE);
+                break;
             }
-            else
-            {
-                DrawRectangle(GetScreenWidth() / 3 + 100, GetScreenHeight() / 6 + 100, 300, 250, RAYWHITE);
-            }
-        }
 
-        void setDefaults(std::vector<Category> &def) {
-            for(int i = 0; i < 9; i++) {
-                Category *temp = new Category;
-                switch(i) {
-                    case 0: {
-                        temp->name = "Foodstuff";
-                        temp->type = "Physiological";
-                        temp->description = "Everything edible. Drinks included.";
-                        break;
-                    }
-                    case 1: {
-                        temp->name = "Clothes";
-                        temp->type = "Physiological";
-                        temp->description = "Everything wearable.";
-                        break;
-                    }
-                    case 2: {
-                        temp->name = "Electronics";
-                        temp->type = "Technological";
-                        temp->description = "Everything that requires electricity to run.";
-                        break;
-                    }
-                    case 3: {
-                        temp->name = "Furniture";
-                        temp->type = "Technological";
-                        temp->description = "Everything from beds to cupboards is considered furniture.";
-                        break;
-                    }
-                    case 4: {
-                        temp->name = "A new chess set";
-                        temp->type = "Entertainment and Leisure";
-                        temp->description = "Your old one broke, so I guess you need a new one.";
-                        break;
-                    }
-                    case 5: {
-                        temp->name = "A new chess set";
-                        temp->type = "Entertainment and Leisure";
-                        temp->description = "Your old one broke, so I guess you need a new one.";
-                        break;
-                    }
-                    case 6: {
-                        temp->name = "A new chess set";
-                        temp->type = "Entertainment and Leisure";
-                        temp->description = "Your old one broke, so I guess you need a new one.";
-                        break;
-                    }
-                    case 7: {
-                        temp->name = "A new chess set";
-                        temp->type = "Entertainment and Leisure";
-                        temp->description = "Your old one broke, so I guess you need a new one.";
-                        break;
-                    }
-                    case 8: {
-                        temp->name = "A new chess set";
-                        temp->type = "Entertainment and Leisure";
-                        temp->description = "Your old one broke, so I guess you need a new one.";
-                        break;
-                    }
-                }
-                def.push_back(*temp);
-                delete temp;
-            }
+            EndDrawing();
         }
+    }
 
         void categoryScreen(std::string account) {
-            std::vector<Category> allCategories;
-            Category *selectedCategory = new Category;
-            size_t* initialCategoryIndex = new size_t;
-            bool* categorySelected = new bool(false);
+        std::vector<Category> categories;
 
-            setDefaults(allCategories);
+        std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
+        std::ifstream file(csvFilePath);
+        if (file.is_open()) {
+            std::string line;
+            while (std::getline(file, line)) {
+                if (line.find("category") == 0) {
+                    std::istringstream ss(line);
+                    std::string type, name, description;
+                    float budget;
+                    std::getline(ss, type, ',');
+                    std::getline(ss, name, ',');
+                    std::getline(ss, description, ',');
+                    ss >> budget;
 
-            Camera2D camera = {0};
-            camera.target = {0, 0};
-            camera.offset = {0, 0};
-            camera.zoom = 1.0f;
+                    Category category;
+                    category.type = type;
+                    category.name = name;
+                    category.description = description;
+                    category.budget = budget;
 
-            float scrollSpeed = 30.0f;
-            float screenHeight = static_cast<float>(GetScreenHeight());
-            float categoryHeight = 80.0f;
-            float baseY = 100.0f;
-            float categoryAreaHeight = allCategories.size() * categoryHeight;
+                    categories.push_back(category);
+                }
+            }
+            file.close();
+        } else {
+            std::cerr << "Failed to open file: " << csvFilePath << std::endl;
+        }
 
-            float maxScroll = categoryAreaHeight - (screenHeight - baseY);
+        Camera2D camera = {0};
+        camera.target = {0, 0};
+        camera.offset = {0, 0};
+        camera.zoom = 1.0f;
 
-            bool* showNavigationsBar = new bool(false);
+        float scrollSpeed = 30.0f;
+        float screenHeight = static_cast<float>(GetScreenHeight());
+        float categoryHeight = 80.0f;
+        float baseY = 100.0f;
+        float categoryAreaHeight = categories.size() * categoryHeight;
 
-            if (maxScroll < 0) {
-                maxScroll = 0;
+        float maxScroll = categoryAreaHeight - (screenHeight - baseY);
+
+        bool* showNavigationsBar = new bool(false);
+
+        if (maxScroll < 0) {
+            maxScroll = 0;
+        }
+
+        while(!WindowShouldClose()) {
+            if(IsKeyPressed(KEY_ESCAPE)) {
+                break;
             }
 
-            while(!WindowShouldClose()) {
-                if(IsKeyPressed(KEY_ESCAPE)) {
+            camera.target.y -= GetMouseWheelMove() * scrollSpeed;
+
+            if (camera.target.y < 0) {
+                camera.target.y = 0;
+            }
+            if (camera.target.y > maxScroll) {
+                camera.target.y = maxScroll;
+            }
+
+            BeginDrawing();
+            ClearBackground({51, 58, 63, 100});
+
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
+            DrawText("New category", GetScreenWidth()/10+80, 30, 25, BLACK);
+
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/10), 20, 250, 40}) &&
+                         (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                newBudget(account, categories);
+            }
+
+            BeginMode2D(camera);
+
+            for(size_t i = 0; i < categories.size(); i++) {
+                DrawRectangle(GetScreenWidth() / 6 + 100, GetScreenHeight() / 6 + 100 + i*80, 200, 80, GRAY);
+                DrawText(categories[i].name.c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*80, 20, BLACK);
+            }
+
+            EndMode2D();
+
+            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
+            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
+            DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
+
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
+                (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                *showNavigationsBar = !(*showNavigationsBar);
+            }
+
+            if(*showNavigationsBar == true){
+                DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
+                DrawText("Main Screen",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
+                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),40,20}) &&
+                (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                     break;
                 }
-
-                camera.target.y -= GetMouseWheelMove() * scrollSpeed;
-
-                if (camera.target.y < 0) {
-                    camera.target.y = 0;
-                }
-                if (camera.target.y > maxScroll) {
-                    camera.target.y = maxScroll;
-                }
-
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-
-                DrawText("Select a category to set a budget for:", GetScreenWidth() / 6 - 100, GetScreenHeight() / 6, 30, LIGHTGRAY);
-
-                BeginMode2D(camera);
-
-                for(size_t i = 0; i < allCategories.size(); i++) {
-                    DrawRectangle(GetScreenWidth() / 6 + 100, GetScreenHeight() / 6 + 100 + i*80, 200, 80, GRAY);
-                    DrawText(allCategories[i].name.c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*80, 20, BLACK);
-                }
-
-                EndMode2D();
-
-                bool *categoryClickedThisFrame = new bool(false);
-
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-                    for (size_t i = 0; i < allCategories.size(); i++) {
-                        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i * 80 - camera.target.y), 200, 80})) {
-                            if(*initialCategoryIndex != i) {
-                                *selectedCategory = allCategories[i];
-                                *categorySelected = true;
-                                *categoryClickedThisFrame = true;
-                                std::cout << "Selected category is now " << allCategories[i].name << std::endl;
-                                *initialCategoryIndex = i;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!*categoryClickedThisFrame && !CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 3 + 100), static_cast<float>(GetScreenHeight() / 6 + 100), 300, 250})) {
-                        *categorySelected = false;
-                        *initialCategoryIndex = -1;
-                        std::cout << "There is no selected category now" << std::endl;
-                    }
-                }
-
-                displaySelected(selectedCategory, categorySelected);
-
-                DrawLine(GetScreenWidth()-80,GetScreenHeight()/16,GetScreenWidth()-40,GetScreenHeight()/16,GRAY);
-                DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-10,GetScreenWidth()-40,GetScreenHeight()/16-10,GRAY);
-                DrawLine(GetScreenWidth()-80,GetScreenHeight()/16-20,GetScreenWidth()-40,GetScreenHeight()/16-20,GRAY);
-
-                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()-80),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
-                    (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                    *showNavigationsBar = !(*showNavigationsBar);
-                }
-
-                if(*showNavigationsBar == true){
-                    DrawRectangle(GetScreenWidth()/1.15,GetScreenHeight()/7.8,150,300,GRAY);
-                    DrawText("Main Screen",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+20,20,WHITE);
-                    if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+20),40,20}) &&
-                    (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                        break;
-                    }
-
-                    DrawText("Analytics",GetScreenWidth()/1.15+5,GetScreenHeight()/7.8+40,20,WHITE);
-
-                    if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/1.15+5),static_cast<float>(GetScreenHeight()/7.8+40),40,20}) &&
-                    (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                        std::cout << "Analytics" << std::endl;
-                    }
-                }
-
-                EndDrawing();
             }
+
+            EndDrawing();
         }
+
+        delete showNavigationsBar;
+    }
+
     }
