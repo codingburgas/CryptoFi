@@ -140,6 +140,11 @@ namespace auth {
     Rectangle* passwordRecPtr = new Rectangle{ static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 40), 350, 50 };
 
     while (!WindowShouldClose()) {
+        logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
+        signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
+
+        *usernameRecPtr = { static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 - 30), 350, 50 };
+        *passwordRecPtr =   { static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 40), 350, 50 };
         BeginDrawing();
         ClearBackground({51, 58, 63, 100});
 

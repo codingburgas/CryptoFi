@@ -161,6 +161,7 @@ namespace export_ns {
                 std::string pdfFilename = "exports/" + account + "_export_" + oss.str() + ".pdf";
                 HPDF_SaveToFile(pdf, pdfFilename.c_str());
                 HPDF_Free(pdf);
+                break;
             }
 
             EndDrawing();

@@ -307,7 +307,7 @@ namespace mainScreen {
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
         DrawTextEx(*fontAll, "Export",{ static_cast<float>(GetScreenWidth()/1.3), 26 },  30, 1, BLACK);
 
-        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.2), 20, 250, 20}) &&
+        if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.4), 20, 250, 20}) &&
            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
             updateMoney(money, account, transactions, fontAll);
             sortTransactions(transactions);
