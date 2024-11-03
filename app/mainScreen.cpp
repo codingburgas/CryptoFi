@@ -17,7 +17,7 @@ namespace mainScreen {
         }
     }
 
-    void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions) {
+    void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions, Font *fontAll) {
     std::string* differenceInput = new std::string;
     std::string* reasonInput = new std::string;
     bool* typingDifference = new bool(true);
@@ -34,24 +34,23 @@ namespace mainScreen {
         ClearBackground({51, 58, 63, 100});
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
+        DrawTextEx(*fontAll, account.c_str(), { static_cast<float> ( GetScreenWidth()/10+80), 26}, 30, 1, BLACK);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.4), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.4+10, 30, 20, GRAY);
+        DrawTextEx(*fontAll, TextFormat("Money: %.2f", *money),   {static_cast<float>( GetScreenWidth() /2.4+10 ), static_cast<float>(27) } , 25, 1, GRAY);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
-        DrawText("Export",GetScreenWidth()/1.3, 30, 25, BLACK);
+        DrawTextEx(*fontAll, "Export", { static_cast<float> (GetScreenWidth()/1.3 ),static_cast<float> (26) }, 30, 1, BLACK);
 
-        DrawText("Update Money", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 150, 30, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Update Money", { static_cast<float> (GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 250) }, 70, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll, "Transaction Type:",{ static_cast<float> (GetScreenWidth() / 2 - 100),static_cast<float>( GetScreenHeight() / 2 - 150) }, 30, 1, GRAY);
+        DrawTextEx(*fontAll, *isRevenue ? "Revenue (+)" : "Expense (-)", { static_cast<float>( GetScreenWidth() / 2 - 100),static_cast<float>( GetScreenHeight() / 2 - 110 )}, 35, 1,DARKGRAY);
 
-        DrawText("Transaction Type:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 120, 20, GRAY);
-        DrawText(*isRevenue ? "Revenue (+)" : "Expense (-)", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 90, 20, DARKGRAY);
+        DrawTextEx(*fontAll, "Enter amount difference:", { static_cast<float> (GetScreenWidth() / 2 - 100 ), static_cast<float> ( GetScreenHeight() / 2 - 70 ) }, 40, 1, GRAY);
+        DrawTextEx(*fontAll, differenceInput->c_str(), { static_cast<float>(GetScreenWidth() / 2 - 100),static_cast<float>( GetScreenHeight() / 2 - 40 )}, 30, 1, DARKGRAY);
 
-        DrawText("Enter amount difference:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 60, 20, GRAY);
-        DrawText(differenceInput->c_str(), GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 - 30, 20, DARKGRAY);
-
-        DrawText("Enter reason:", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 10, 20, GRAY);
-        DrawText(reasonInput->c_str(), GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 40, 20, DARKGRAY);
+        DrawTextEx(*fontAll, "Enter reason:", { static_cast<float>(GetScreenWidth() / 2 - 100),static_cast<float>( GetScreenHeight() / 2 )}, 40, 1, GRAY);
+        DrawTextEx(*fontAll, reasonInput->c_str(), { static_cast<float>( GetScreenWidth() / 2 - 100 ), static_cast<float> ( GetScreenHeight() / 2 + 30 )}, 30, 1, DARKGRAY);
 
         if (IsKeyPressed(KEY_TAB)) {
             *typingDifference = !(*typingDifference);
@@ -201,7 +200,7 @@ namespace mainScreen {
         return stream.str();
     }
 
-    void mainScreen(std::string account) {
+    void mainScreen(std::string account, Font *fontAll) {
     float* money = new float(0.0f);
     float* budget = new float(0.0f);
     std::vector<Transaction*> transactions;
@@ -300,17 +299,17 @@ namespace mainScreen {
         ClearBackground({51, 58, 63, 100});
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
+        DrawTextEx(*fontAll, account.c_str(), { static_cast<float> ( GetScreenWidth()/10+80), 26}, 30, 1, BLACK);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.4), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.4+10, 30, 20, GRAY);
+        DrawTextEx(*fontAll, TextFormat("Money: %.2f", *money), { static_cast<float> ( GetScreenWidth()/2.4+10 ), 27}, 25, 1,GRAY);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/1.4),20,250,40},0.3f,20,WHITE);
-        DrawText("Export",GetScreenWidth()/1.3, 30, 25, BLACK);
+        DrawTextEx(*fontAll, "Export",{ static_cast<float>(GetScreenWidth()/1.3), 26 },  30, 1, BLACK);
 
         if (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.2), 20, 250, 20}) &&
            (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-            updateMoney(money, account, transactions);
+            updateMoney(money, account, transactions, fontAll);
             sortTransactions(transactions);
            }
 
@@ -324,8 +323,8 @@ namespace mainScreen {
             for (int i = 0; i < transactions.size(); i++) {
                 Transaction* t = transactions[i];
                 std::string displayText = t->type + ": " + t->reason + " - " + formatDate(t->date) + " (Difference: " + formatDifference(t->difference) + ")";
-                DrawRectangleRounded({static_cast<float>(GetScreenWidth()/6), (baseY + i * transactionHeight-20)+i*50, static_cast<float>(GetScreenWidth()/1.4), 60}, 0.3f, 20, LIGHTGRAY);
-                DrawText(displayText.c_str(), GetScreenWidth()/6+10, (baseY + i * transactionHeight)+i*50, 20, DARKGRAY);
+                DrawRectangleRounded({static_cast<float>(GetScreenWidth()/6), (baseY + i * transactionHeight - 20)+ i * 50, static_cast<float>(GetScreenWidth()/1.4), 60}, 0.3f, 20, LIGHTGRAY);
+                DrawTextEx(*fontAll, displayText.c_str(), { static_cast<float>( GetScreenWidth()/6 + 10 ), static_cast<float>((baseY + i * transactionHeight ) + i * 50 )}, 25, 1, DARKGRAY);
             }
 
 
@@ -342,13 +341,13 @@ namespace mainScreen {
 
         if(*showNavigationsBar == true){
             DrawRectangle(GetScreenWidth()/48,GetScreenHeight()/7.8,150,300,GRAY);
-            DrawText("Budget",GetScreenWidth()/48+10,GetScreenHeight()/7.8+20,20,WHITE);
+            DrawTextEx(*fontAll, "Budget", { static_cast<float>( GetScreenWidth()/48 + 10),static_cast<float>(GetScreenHeight()/7.8 + 20) } ,20, 1, WHITE);
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 budgetCategories::categoryScreen(account);
             }
 
-            DrawText("Analytics",GetScreenWidth()/48+10,GetScreenHeight()/7.8+60,20,WHITE);
+            DrawTextEx(*fontAll, "Analytics",{ static_cast<float>(GetScreenWidth()/48 + 10),static_cast<float>( GetScreenHeight()/7.8 + 60) } ,20, 1,WHITE);
 
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/48+10),static_cast<float>(GetScreenHeight()/7.8+60),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) && !transactions.empty()) {

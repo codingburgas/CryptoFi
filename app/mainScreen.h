@@ -9,8 +9,8 @@ namespace mainScreen {
         float difference;
     };
 
-    void mainScreen(std::string account);
-    void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions);
+    void mainScreen(std::string account, Font *fontAll);
+    void updateMoney(float* money, const std::string& account, std::vector<Transaction*>& transactions, Font *fontAll);
     std::chrono::system_clock::time_point* parseDate(const std::string* dateStr);
     std::string formatDate(const std::chrono::system_clock::time_point& date);
 }

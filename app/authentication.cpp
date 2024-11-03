@@ -20,10 +20,10 @@ namespace auth {
     }
 
     void Menu::drawTextFields(Font *fontAll) {
-        DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 - 20) }, 31, 1, LIGHTGRAY);
-        DrawText(usernameInput.c_str(), GetScreenWidth() / 2 + 30, GetScreenHeight() / 2 - 15, 20, WHITE);
-        DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 + 50) }, 31, 1, LIGHTGRAY);
-        DrawText(passwordMasked.c_str(), GetScreenWidth() / 2 + 30, GetScreenHeight() / 2 + 55, 20, WHITE);
+        DrawTextEx(*fontAll, "Username: ", { static_cast<float>(GetScreenWidth() / 2 - 100), static_cast<float>(GetScreenHeight() / 2 - 20) }, 31, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll ,usernameInput.c_str(), { static_cast<float>(GetScreenWidth() / 2 + 30), static_cast<float>(GetScreenHeight() / 2 - 20) }, 31, 1, WHITE);
+        DrawTextEx(*fontAll, "Password: ", { static_cast<float>(GetScreenWidth() / 2 - 100 ), static_cast<float>(GetScreenHeight() / 2 + 50) }, 31, 1, LIGHTGRAY);
+        DrawTextEx(*fontAll, passwordMasked.c_str(), {static_cast<float>(GetScreenWidth() / 2 + 30), static_cast<float>(GetScreenHeight() / 2 + 50) }, 45, 1, WHITE);
     }
 
     void Menu::handleInput() {
@@ -109,10 +109,10 @@ namespace auth {
             }
 
             if (found) {
-                DrawText("Login Successful!", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 80, 20, GREEN);
-                mainScreen::mainScreen(usernameInput);
+                DrawTextEx(*fontAll,"Login Successful!", {static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 90)}, 30, 1, GREEN);
+                mainScreen::mainScreen(usernameInput, fontAll);
             } else {
-                DrawText("Invalid Credentials!", GetScreenWidth() / 2 - 100, GetScreenHeight() / 2 + 80, 20, RED);
+                DrawTextEx(*fontAll, "Invalid Credentials!", {static_cast<float>(GetScreenWidth() / 2 - 120), static_cast<float>(GetScreenHeight() / 2 + 90)}, 30, 1,RED);
             }
 
             resetInputs();
@@ -130,6 +130,7 @@ namespace auth {
 
     Font font = LoadFont("resources/font/Manrope-Bold.ttf");
     Font* fontAll = new Font(LoadFont("resources/font/Manrope-Bold.ttf"));
+
     Rectangle logInRec = { static_cast<float>(GetScreenWidth() / 2 - 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
     Rectangle signUpRec = { static_cast<float>(GetScreenWidth() / 2 + 200), static_cast<float>(GetScreenHeight() / 8 + 135), 200, 40 };
 
@@ -146,9 +147,9 @@ namespace auth {
         DrawTextEx(*fontAll, "Welcome to CryptoFi", { static_cast<float>(GetScreenWidth() / 2 - 100 ),static_cast<float>( GetScreenHeight() / 4.6 )}, 50, 1, WHITE);
 
         DrawRectangleRec(logInRec, BLACK);
-        DrawText("Log in" , static_cast<int>(logInRec.x + 20), static_cast<int>(logInRec.y + 10), 20, WHITE);
+        DrawTextEx(*fontAll, "Log in" , { static_cast<float>(logInRec.x + 20), static_cast<float>(logInRec.y + 5) }, 30, 1, WHITE);
         DrawRectangleRec(signUpRec, BLACK);
-        DrawText("Sign up", static_cast<int>(signUpRec.x + 20), static_cast<int>(signUpRec.y + 10), 20, WHITE);
+        DrawTextEx(*fontAll, "Sign up", { static_cast<float>(signUpRec.x + 20), static_cast<float>(signUpRec.y + 5) }, 30, 1, WHITE);
 
         DrawRectangleRounded({ usernameRecPtr->x + 10, usernameRecPtr->y + 10, usernameRecPtr->width, usernameRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
         DrawRectangleRounded({ passwordRecPtr->x + 10, passwordRecPtr->y + 10, passwordRecPtr->width, passwordRecPtr->height }, 0.3f, 20, {0, 0, 0, 100});
