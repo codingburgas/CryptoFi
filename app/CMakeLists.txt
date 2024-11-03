@@ -23,6 +23,7 @@ add_executable(app main.cpp
         export.h
         predictions.cpp
         predictions.h
+        budgetCategories.cpp
 )
 
 # Link libraries based on build type

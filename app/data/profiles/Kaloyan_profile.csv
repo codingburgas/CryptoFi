@@ -6,7 +6,7 @@ expense,1,Sat Oct 26 19:48:13 2024,-1
 expense,test,Sat Oct 26 19:49:05 2024,-10
 revenue,test,Sat Oct 26 19:51:48 2024,100
 revenue,test,Fri Nov  1 17:27:39 2024,420
-category,Montly,Rent,I need it to pay rent,1000
+category,Montly,Rent,I need it to pay rent,300
 category,rewsdf,fdsf,fds,123
 expense,test,Sat Nov  2 17:08:39 2024,-210
 expense,Buy a cola,Sat Nov  2 17:13:54 2024,-1

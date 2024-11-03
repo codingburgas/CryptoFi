@@ -104,6 +104,116 @@ namespace budgetCategories {
         }
     }
 
+    void updateCategory(std::string account, Category& category, std::vector<Category>& categories) {
+        std::string typeInput = category.type;
+        std::string nameInput = category.name;
+        std::string descriptionInput = category.description;
+        std::string budgetInput = std::to_string(category.budget);
+        bool typingType = true;
+        bool typingName = false;
+        bool typingDescription = false;
+        bool typingBudget = false;
+
+        while (true) {
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                break;
+            }
+
+            BeginDrawing();
+            ClearBackground({51, 58, 63, 100});
+
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/5), static_cast<float>(GetScreenHeight()/6), static_cast<float>(GetScreenWidth()/1.8), static_cast<float>(GetScreenHeight()/2)}, 0.3f, 20, WHITE);
+
+            DrawText("Enter Category Type:", GetScreenWidth()/4, GetScreenHeight()/4, 20, BLACK);
+            DrawText(typeInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/4, 20, DARKGRAY);
+
+            DrawText("Enter Category Name:", GetScreenWidth()/4, GetScreenHeight()/3.2, 20, BLACK);
+            DrawText(nameInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/3.2, 20, DARKGRAY);
+
+            DrawText("Enter Category Description:", GetScreenWidth()/4, GetScreenHeight()/2.8, 20, BLACK);
+            DrawText(descriptionInput.c_str(), GetScreenWidth()/2.05, GetScreenHeight()/2.8, 20, DARKGRAY);
+
+            DrawText("Enter Category Budget:", GetScreenWidth()/4, GetScreenHeight()/2.4, 20, BLACK);
+            DrawText(budgetInput.c_str(), GetScreenWidth()/2.2, GetScreenHeight()/2.4, 20, DARKGRAY);
+
+            if (IsKeyPressed(KEY_TAB)) {
+                if (typingType) {
+                    typingType = false;
+                    typingName = true;
+                } else if (typingName) {
+                    typingName = false;
+                    typingDescription = true;
+                } else if (typingDescription) {
+                    typingDescription = false;
+                    typingBudget = true;
+                } else if (typingBudget) {
+                    typingBudget = false;
+                    typingType = true;
+                }
+            }
+
+            int key = GetCharPressed();
+            if (key > 0) {
+                if (typingType) {
+                    typeInput += static_cast<char>(key);
+                } else if (typingName) {
+                    nameInput += static_cast<char>(key);
+                } else if (typingDescription) {
+                    descriptionInput += static_cast<char>(key);
+                } else if (typingBudget) {
+                    budgetInput += static_cast<char>(key);
+                }
+            }
+
+            if (IsKeyPressed(KEY_BACKSPACE)) {
+                if (typingType && !typeInput.empty()) {
+                    typeInput.pop_back();
+                } else if (typingName && !nameInput.empty()) {
+                    nameInput.pop_back();
+                } else if (typingDescription && !descriptionInput.empty()) {
+                    descriptionInput.pop_back();
+                } else if (typingBudget && !budgetInput.empty()) {
+                    budgetInput.pop_back();
+                }
+            }
+
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}, 0.3f, 20, BLACK);
+            DrawText("Enter to save", GetScreenWidth()/2.8+50, GetScreenHeight()/1.8+10, 20, WHITE);
+            if (IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}) &&
+                         (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
+                category.type = typeInput;
+                category.name = nameInput;
+                category.description = descriptionInput;
+                category.budget = std::stof(budgetInput);
+
+                std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
+                std::ifstream file(csvFilePath);
+                std::vector<std::string> lines;
+                std::string line;
+                while (std::getline(file, line)) {
+                    lines.push_back(line);
+                }
+                file.close();
+
+                if (category.lineNumber > 0 && category.lineNumber <= lines.size()) {
+                    std::ostringstream updatedLine;
+                    updatedLine << "category," << category.type << "," << category.name << "," << category.description << "," << category.budget;
+                    lines[category.lineNumber - 1] = updatedLine.str();
+                }
+
+                std::ofstream outFile(csvFilePath);
+                for (const auto& l : lines) {
+                    outFile << l << "\n";
+                }
+                outFile.close();
+
+                break;
+            }
+
+            EndDrawing();
+        }
+    }
+
         void categoryScreen(std::string account) {
         std::vector<Category> categories;
 
@@ -111,7 +221,9 @@ namespace budgetCategories {
             std::ifstream file(csvFilePath);
             if (file.is_open()) {
                 std::string line;
+                int lineNumber = 0;
                 while (std::getline(file, line)) {
+                    lineNumber++;
                     if (line.find("category") == 0) {
                         std::istringstream ss(line);
                         std::string type, name, description, budgetStr;
@@ -127,6 +239,7 @@ namespace budgetCategories {
                         category.name = name;
                         category.description = description;
                         category.budget = budget;
+                        category.lineNumber = lineNumber;
 
                         categories.push_back(category);
                     }
@@ -188,6 +301,10 @@ namespace budgetCategories {
                 DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i*100), static_cast<float>(GetScreenWidth()/1.8), 40},0.3f,20, WHITE);
                 DrawText(displayText->c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*100, 20, BLACK);
                 delete displayText;
+                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i*100),static_cast<float>(GetScreenWidth()/1.8), 40}) &&
+                         (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
+                    updateCategory(account, categories[i], categories);
+                }
             }
 
             EndMode2D();
