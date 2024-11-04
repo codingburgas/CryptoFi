@@ -3,7 +3,7 @@
 
 namespace budgetCategories {
 
-        void newBudget(std::string account, std::vector<Category>& categories) {
+        void newBudget(std::string account, std::vector<Category>& categories, Font *fontAll) {
         std::string typeInput;
         std::string nameInput;
         std::string descriptionInput;
@@ -21,19 +21,19 @@ namespace budgetCategories {
             BeginDrawing();
             ClearBackground({51, 58, 63, 100});
 
-            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/5), static_cast<float>(GetScreenHeight()/6), static_cast<float>(GetScreenWidth()/1.8), static_cast<float>(GetScreenHeight()/2)}, 0.3f, 20, WHITE);
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 5), static_cast<float>(GetScreenHeight() / 6), static_cast<float>(GetScreenWidth()/1.8), static_cast<float>(GetScreenHeight()/2)}, 0.3f, 20, WHITE);
 
-            DrawText("Enter Category Type:", GetScreenWidth()/4, GetScreenHeight()/4, 20, BLACK);
-            DrawText(typeInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/4, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Type:", {static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 4) }, 30, 1, BLACK);
+            DrawTextEx(*fontAll, typeInput.c_str(), { static_cast<float>( GetScreenWidth() / 2.28 ), static_cast<float> ( GetScreenHeight() / 4 )}, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Name:", GetScreenWidth()/4, GetScreenHeight()/3.2, 20, BLACK);
-            DrawText(nameInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/3.2, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Name:", { static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 3.2)}, 30, 1, BLACK);
+            DrawTextEx(*fontAll, nameInput.c_str(), { static_cast<float>(GetScreenWidth() / 2.25), static_cast<float>(GetScreenHeight() / 3.2) }, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Description:", GetScreenWidth()/4, GetScreenHeight()/2.8, 20, BLACK);
-            DrawText(descriptionInput.c_str(), GetScreenWidth()/2.05, GetScreenHeight()/2.8, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Description:", { static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 2.6)}, 30, 1,BLACK);
+            DrawTextEx(*fontAll, descriptionInput.c_str(), { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2.6)}, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Budget:", GetScreenWidth()/4, GetScreenHeight()/2.4, 20, BLACK);
-            DrawText(budgetInput.c_str(), GetScreenWidth()/2.2, GetScreenHeight()/2.4, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Budget:", { static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 2.2) }, 30, 1, BLACK);
+            DrawTextEx(*fontAll, budgetInput.c_str(), { static_cast<float>(GetScreenWidth() / 2.18), static_cast<float>(GetScreenHeight() / 2.2) }, 30, 1, DARKGRAY);
 
             if (IsKeyPressed(KEY_TAB)) {
                 if (typingType) {
@@ -77,7 +77,7 @@ namespace budgetCategories {
             }
 
             DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}, 0.3f, 20, BLACK);
-            DrawText("Enter to save", GetScreenWidth()/2.8+50, GetScreenHeight()/1.8+10, 20, WHITE);;
+            DrawTextEx(*fontAll, "Enter to save", { static_cast<float>(GetScreenWidth() / 2.8 + 50), static_cast<float>(GetScreenHeight() / 1.8)}, 30  , 1,  WHITE);
             if (IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}) &&
                          (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
                 Category newCategory;
@@ -104,7 +104,7 @@ namespace budgetCategories {
         }
     }
 
-    void updateCategory(std::string account, Category& category, std::vector<Category>& categories) {
+    void updateCategory(std::string account, Category& category, std::vector<Category>& categories, Font *fontAll) {
         std::string typeInput = category.type;
         std::string nameInput = category.name;
         std::string descriptionInput = category.description;
@@ -124,17 +124,17 @@ namespace budgetCategories {
 
             DrawRectangleRounded({static_cast<float>(GetScreenWidth()/5), static_cast<float>(GetScreenHeight()/6), static_cast<float>(GetScreenWidth()/1.8), static_cast<float>(GetScreenHeight()/2)}, 0.3f, 20, WHITE);
 
-            DrawText("Enter Category Type:", GetScreenWidth()/4, GetScreenHeight()/4, 20, BLACK);
-            DrawText(typeInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/4, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Type:", {static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 4) }, 30, 1, BLACK);
+            DrawTextEx(*fontAll, typeInput.c_str(), { static_cast<float>(GetScreenWidth() / 2.28), static_cast<float>(GetScreenHeight() / 4)}, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Name:", GetScreenWidth()/4, GetScreenHeight()/3.2, 20, BLACK);
-            DrawText(nameInput.c_str(), GetScreenWidth()/2.3, GetScreenHeight()/3.2, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Name:", { static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 3.2)}, 30, 1, BLACK);
+            DrawTextEx(*fontAll, nameInput.c_str(), { static_cast<float>( GetScreenWidth() / 2.25), static_cast<float>(GetScreenHeight() / 3.2)}, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Description:", GetScreenWidth()/4, GetScreenHeight()/2.8, 20, BLACK);
-            DrawText(descriptionInput.c_str(), GetScreenWidth()/2.05, GetScreenHeight()/2.8, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Description:", { static_cast<float>( GetScreenWidth() / 4), static_cast<float>( GetScreenHeight() / 2.6 ) }, 30, 1, BLACK);
+            DrawTextEx(*fontAll, descriptionInput.c_str(), { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2.6)}, 30, 1, DARKGRAY);
 
-            DrawText("Enter Category Budget:", GetScreenWidth()/4, GetScreenHeight()/2.4, 20, BLACK);
-            DrawText(budgetInput.c_str(), GetScreenWidth()/2.2, GetScreenHeight()/2.4, 20, DARKGRAY);
+            DrawTextEx(*fontAll, "Enter Category Budget:", {static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 2.2)}, 30, 1, BLACK);
+            DrawTextEx(*fontAll, budgetInput.c_str(), { static_cast<float>( GetScreenWidth() / 2.18 ), static_cast<float>(GetScreenHeight() / 2.2)}, 30, 1, DARKGRAY);
 
             if (IsKeyPressed(KEY_TAB)) {
                 if (typingType) {
@@ -178,7 +178,7 @@ namespace budgetCategories {
             }
 
             DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}, 0.3f, 20, BLACK);
-            DrawText("Enter to save", GetScreenWidth()/2.8+50, GetScreenHeight()/1.8+10, 20, WHITE);
+            DrawTextEx(*fontAll, "Enter to save", { static_cast<float>(GetScreenWidth() / 2.8 + 50), static_cast<float>(GetScreenHeight() / 1.8)}, 30  , 1,  WHITE);
             if (IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/2.8), static_cast<float>(GetScreenHeight()/1.8), 250, 40}) &&
                          (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) && !typeInput.empty() && !nameInput.empty() && !descriptionInput.empty() && !budgetInput.empty()) {
                 category.type = typeInput;
@@ -214,7 +214,7 @@ namespace budgetCategories {
         }
     }
 
-        void categoryScreen(std::string account) {
+        void categoryScreen(std::string account, Font *fontAll) {
         std::vector<Category> categories;
 
             std::string csvFilePath = "data/profiles/" + account + "_profile.csv";
@@ -285,12 +285,15 @@ namespace budgetCategories {
             BeginDrawing();
             ClearBackground({51, 58, 63, 100});
 
-            DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
-            DrawText("New category", GetScreenWidth()/10+40, 30, 25, BLACK);
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 10), 20, 250, 40}, 0.3f, 20, WHITE);
+            DrawTextEx(*fontAll, account.c_str(), { static_cast<float> ( GetScreenWidth()/10 + 80), 26}, 30, 1, BLACK);
 
-            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/10), 20, 250, 40}) &&
+            DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 2.4), 20, 250, 40}, 0.3f, 20, WHITE);
+            DrawTextEx(*fontAll, "New category", { static_cast<float>(GetScreenWidth()/ 2.4 + 10), 26}, 32, 1, BLACK);
+
+            if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 10), 20, 250, 40}) &&
                          (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                newBudget(account, categories);
+                newBudget(account, categories, fontAll);
             }
 
             BeginMode2D(camera);
@@ -298,20 +301,20 @@ namespace budgetCategories {
             for(size_t i = 0; i < categories.size(); i++) {
                 std::string* displayText = new std::string;
                 *displayText = categories[i].type + ": " + categories[i].name + " - " + categories[i].description + " (Budget: " + std::to_string(categories[i].budget) + ")";
-                DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i*100), static_cast<float>(GetScreenWidth()/1.8), 40},0.3f,20, WHITE);
-                DrawText(displayText->c_str(), GetScreenWidth() / 6 + 110, GetScreenHeight() / 6 + 110 + i*100, 20, BLACK);
+                DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i * 100), static_cast<float>(GetScreenWidth() / 1.8), 40},0.3f,20, WHITE);
+                DrawTextEx(*fontAll, displayText->c_str(), { static_cast<float>(GetScreenWidth() / 6 + 110), static_cast<float>(GetScreenHeight() / 6 + 110 + i * 100)}, 30, 1, BLACK);
                 delete displayText;
                 if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth() / 6 + 100), static_cast<float>(GetScreenHeight() / 6 + 100 + i*100),static_cast<float>(GetScreenWidth()/1.8), 40}) &&
                          (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
-                    updateCategory(account, categories[i], categories);
+                    updateCategory(account, categories[i], categories, fontAll);
                 }
             }
 
             EndMode2D();
 
-            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16,GetScreenWidth()/16-20,GetScreenHeight()/16,WHITE);
-            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-10,GetScreenWidth()/16-20,GetScreenHeight()/16-10,WHITE);
-            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16-20,GetScreenWidth()/16-20,GetScreenHeight()/16-20,WHITE);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16,GetScreenWidth()/16 - 20,GetScreenHeight()/16,WHITE);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16 - 10,GetScreenWidth()/16 - 20,GetScreenHeight()/16 - 10,WHITE);
+            DrawLine(GetScreenWidth()/16-60,GetScreenHeight()/16 - 20,GetScreenWidth()/16 - 20,GetScreenHeight()/16 - 20,WHITE);
 
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/16-60),static_cast<float>(GetScreenHeight()/16-20),40,20}) &&
                 (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
@@ -320,8 +323,8 @@ namespace budgetCategories {
 
             if(*showNavigationsBar == true){
                 DrawRectangle(GetScreenWidth()/48,GetScreenHeight()/7.8,150,300,GRAY);
-                DrawText("Main screen",GetScreenWidth()/48+10,GetScreenHeight()/7.8+20,20,WHITE);
-                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
+                DrawTextEx(*fontAll, "Main screen",{static_cast<float>(GetScreenWidth() / 48 + 10),static_cast<float>(GetScreenHeight() / 7.8 + 30)}, 27, 1, WHITE);
+                if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32 + 5),static_cast<float>(GetScreenHeight()/7.8 + 30),120,20}) &&
                 (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                     break;
                 }
@@ -334,4 +337,4 @@ namespace budgetCategories {
         delete showNavigationsBar;
     }
 
-    }
+}

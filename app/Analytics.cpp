@@ -2,7 +2,7 @@
 #include "predictions.h"
 
 namespace analytics {
-    void analytics(std::vector<mainScreen::Transaction*> transactions, std::string& account, float* money) {
+    void analytics(std::vector<mainScreen::Transaction*> transactions, std::string& account, float* money, Font *fontAll) {
     int* revenueCount = new int(0);
     int* expenseCount = new int(0);
 
@@ -29,16 +29,16 @@ namespace analytics {
         BeginDrawing();
         ClearBackground({51, 58, 63, 100});
 
-        DrawRectangleRounded({static_cast<float>(GetScreenWidth()/10), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(account.c_str(), GetScreenWidth()/10+80, 30, 25, BLACK);
+        DrawRectangleRounded({static_cast<float>(GetScreenWidth() / 10), 20, 250, 40}, 0.3f, 20, WHITE);
+        DrawTextEx(*fontAll, account.c_str(), { static_cast<float>(GetScreenWidth() / 10 + 80), static_cast<float>(30)}, 25, 1, BLACK);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/2.4), 20, 250, 40}, 0.3f, 20, WHITE);
-        DrawText(TextFormat("Money: %.2f", *money), GetScreenWidth()/2.4+10, 30, 20, GRAY);
+        DrawTextEx(*fontAll, TextFormat("Money: %.2f", *money), {static_cast<float>( GetScreenWidth() / 2.4 + 50), static_cast<float>(27)}, 25, 1, BLACK);
 
         DrawRectangleRounded({static_cast<float>(GetScreenWidth()/16-20), static_cast<float>(GetScreenHeight()/1.2-10), static_cast<float>(GetScreenWidth()/1.2), 40}, 0.3f, 20, WHITE);
-        DrawText(prediction.c_str(), GetScreenWidth() / 16, GetScreenHeight() / 1.2, 20, BLACK);
+        DrawTextEx(*fontAll, prediction.c_str(), { static_cast<float>(GetScreenWidth() / 16), static_cast<float>(GetScreenHeight() / 1.2 )}, 20, 1, BLACK);
 
-        DrawLine(GetScreenWidth() / 16, GetScreenHeight() / 3, GetScreenWidth() / 16, GetScreenHeight() / 3+200, WHITE);
+        DrawLine(GetScreenWidth() / 16, GetScreenHeight() / 3, GetScreenWidth() / 16, GetScreenHeight() / 3 + 200, WHITE);
         DrawLine(GetScreenWidth() / 16, GetScreenHeight() / 2, GetScreenWidth() / 2, GetScreenHeight() / 2, WHITE);
 
         for (int i = 0; i < transactions.size(); i++) {
@@ -64,8 +64,8 @@ namespace analytics {
         DrawRectangle(GetScreenWidth()-300,GetScreenHeight()/2,20,20,GREEN);
         DrawRectangle(GetScreenWidth()-300,GetScreenHeight()/1.8,20,20,RED);
 
-        DrawText("Revenue",GetScreenWidth()-270,GetScreenHeight()/2,20,WHITE);
-        DrawText("Expense",GetScreenWidth()-270,GetScreenHeight()/1.8,20,WHITE);
+        DrawTextEx(*fontAll, "Revenue", { static_cast<float>(GetScreenWidth() - 270) ,static_cast<float>(GetScreenHeight() / 2) } ,20, 1, WHITE);
+        DrawTextEx(*fontAll, "Expense",{ static_cast<float>(GetScreenWidth() - 270) ,static_cast<float>(GetScreenHeight() / 1.8) }, 20, 1, WHITE);
 
         int* pieCenterX = new int(GetScreenWidth() - 150);
         int* pieCenterY = new int(GetScreenHeight() / 2);
@@ -93,7 +93,7 @@ namespace analytics {
 
         if(*showNavigationsBar == true){
             DrawRectangle(GetScreenWidth()/48,GetScreenHeight()/7.8,150,300,GRAY);
-            DrawText("Main screen",GetScreenWidth()/48+10,GetScreenHeight()/7.8+20,20,WHITE);
+            DrawTextEx(*fontAll, "Main screen",{static_cast<float>(GetScreenWidth() / 48 + 10),static_cast<float>(GetScreenHeight() / 7.8 + 30)}, 27, 1, WHITE);
             if(CheckCollisionPointRec(GetMousePosition(), {static_cast<float>(GetScreenWidth()/32+5),static_cast<float>(GetScreenHeight()/7.8+20),120,20}) &&
             (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))) {
                 break;
