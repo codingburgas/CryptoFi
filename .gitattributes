@@ -1,0 +1,2 @@
+# Track all .lib files with Git LFS
+*.lib filter=lfs diff=lfs merge=lfs -text
